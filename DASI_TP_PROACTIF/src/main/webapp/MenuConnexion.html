@@ -42,8 +42,6 @@
                     
                 }).fail(function () {
                     // ici votre code...
-                    // 
-                    // si connexion ok, aller sur la page suivante :
                     
                     // si connexion pas ok afficher un texte dans la div message :
                     $('#message').html('Echec de la connexion');
@@ -70,6 +68,9 @@
                     // 
                     // si connexion ok, aller sur la page suivante :
                     window.location = "MenuEmploye.html";
+                }).fail(function () {
+                    // ici votre code...
+                    
                     // si connexion pas ok afficher un texte dans la div message :
                     $('#message').html('Echec de la connexion');
                 });

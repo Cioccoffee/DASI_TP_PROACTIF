@@ -18,7 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Client;
+import modele.Employe;
 import static service.ServiceAppli.AuthentificationClient;
+import static service.ServiceAppli.AuthentificationEmploye;
 
 /**
  *
@@ -62,8 +64,7 @@ public class ActionServletAccueil extends HttpServlet {
                     String password = request.getParameter("password");
                     
                     Client c = AuthentificationClient(login, password);
-                    System.out.println(c.getPrenom());
-                    System.out.println("client null ?");
+                    
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     PrintWriter out = response.getWriter();
@@ -79,15 +80,21 @@ public class ActionServletAccueil extends HttpServlet {
                 
             case "connecterEmploye":
                 try{
-                    //lp = s.consulterListePersonnes();
+                    String login = request.getParameter("login");
+                    String password = request.getParameter("password");
+                    
+                    Employe e = AuthentificationEmploye(login, password);
+                    
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    PrintWriter out = response.getWriter();
+                    if(e != null){
+                        printAnswerConnexion(out);
+                    }
+                    out.close();
                 }catch(Exception ex){
                     throw new ServletException("Data access problem",ex);
                 }
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                //PrintWriter out = response.getWriter();
-                //printListPeople(out, lp);
-                //out.close();    
                 break;
                 
             default :
