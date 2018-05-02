@@ -20,7 +20,8 @@
             function connexionClient() {
                 var champLogin = $('#champ-login').val();
                 var champPassword = $('#champ-password').val();
-
+                console.log('login : ' + champLogin);
+                console.log('Password : ' + champPassword); 
                 $('#message').html('Connexion en cours...');
 
                 $.ajax({
@@ -37,6 +38,13 @@
                     // 
                     // si connexion ok, aller sur la page suivante :
                     window.location = "MenuClient.html";
+                    // si connexion pas ok afficher un texte dans la div message :
+                    
+                }).fail(function () {
+                    // ici votre code...
+                    // 
+                    // si connexion ok, aller sur la page suivante :
+                    
                     // si connexion pas ok afficher un texte dans la div message :
                     $('#message').html('Echec de la connexion');
                 });

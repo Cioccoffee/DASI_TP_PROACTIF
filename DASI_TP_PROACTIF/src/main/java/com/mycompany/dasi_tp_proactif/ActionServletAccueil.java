@@ -5,6 +5,10 @@
  */
 package com.mycompany.dasi_tp_proactif;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.Client;
 import static service.ServiceAppli.AuthentificationClient;
 
 /**
@@ -53,18 +58,23 @@ public class ActionServletAccueil extends HttpServlet {
                 
                 
                 try{
-                    //lp = s.consulterListePersonnes();
                     String login = request.getParameter("login");
                     String password = request.getParameter("password");
-                    AuthentificationClient(login, password);
+                    
+                    Client c = AuthentificationClient(login, password);
+                    System.out.println(c.getPrenom());
+                    System.out.println("client null ?");
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    PrintWriter out = response.getWriter();
+                    if(c != null){
+                        printAnswerConnexion(out);
+                    }
+                    out.close();
                 }catch(Exception ex){
                     throw new ServletException("Data access problem",ex);
                 }
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                //PrintWriter out = response.getWriter();
-                //printListPeople(out, lp);
-                //out.close();
+                
                 break;
                 
             case "connecterEmploye":
@@ -137,5 +147,15 @@ public class ActionServletAccueil extends HttpServlet {
         JpaUtil.destroy();
     }
     
+    public static void printAnswerConnexion(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        jo.addProperty("res","");
+        
+        JsonObject container = new JsonObject();
+        container.add("res",jo);
+        out.println(gson.toJson(container));
+    }
 
 }
