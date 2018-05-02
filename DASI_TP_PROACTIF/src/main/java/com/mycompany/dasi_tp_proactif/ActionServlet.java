@@ -103,8 +103,26 @@ public class ActionServlet extends HttpServlet {
                 }
                 break;
                 
+            case "deconnecterClient":
+                connectedClient = null;
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter out = response.getWriter();
+                printAnswerConnexion(out);
+                out.close();
+                break;
+                
+            case "deconnecterEmploye":
+                connectedClient = null;
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                printAnswerConnexion(out);
+                out.close();
+                break;
+                
             default :
-                    break;
+                break;
         }
     }
     
