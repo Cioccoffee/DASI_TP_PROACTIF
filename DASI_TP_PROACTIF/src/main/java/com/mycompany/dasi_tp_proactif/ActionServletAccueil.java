@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.aaa.dasi.proactif_ihm_b3448;
+package com.mycompany.dasi_tp_proactif;
 
 import dao.JpaUtil;
 import java.io.IOException;
