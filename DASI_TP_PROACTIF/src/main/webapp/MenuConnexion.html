@@ -25,7 +25,7 @@
                 $('#message').html('Connexion en cours...');
 
                 $.ajax({
-                    url: './ActionServletAccueil',
+                    url: './ActionServlet',
                     method: 'POST',
                     data: {
                         action: 'connecterClient',
@@ -55,7 +55,7 @@
                 $('#message').html('Connexion en cours...');
 
                 $.ajax({
-                    url: './ActionServletAccueil',
+                    url: './ActionServlet',
                     method: 'POST',
                     data: {
                         action: 'connecterEmploye',

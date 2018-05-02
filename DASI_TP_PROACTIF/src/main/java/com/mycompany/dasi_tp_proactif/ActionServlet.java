@@ -26,8 +26,8 @@ import static service.ServiceAppli.AuthentificationEmploye;
  *
  * @author aelomarial
  */
-@WebServlet(name = "ActionServletAccueil", urlPatterns = {"/ActionServletAccueil"})
-public class ActionServletAccueil extends HttpServlet {
+@WebServlet(name = "ActionServlet", urlPatterns = {"/ActionServlet"})
+public class ActionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,6 +38,12 @@ public class ActionServletAccueil extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    //attributs qui doivent être gérés à l'échelle de l'application
+    Client connectedClient;
+    Employe connectedEmploye;
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        response.setContentType("text/html;charset=UTF-8");
@@ -46,10 +52,10 @@ public class ActionServletAccueil extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet ActionServletAccueil</title>");            
+//            out.println("<title>Servlet ActionServlet</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet ActionServletAccueil at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet ActionServlet at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -63,12 +69,12 @@ public class ActionServletAccueil extends HttpServlet {
                     String login = request.getParameter("login");
                     String password = request.getParameter("password");
                     
-                    Client c = AuthentificationClient(login, password);
+                    Client connectedClient = AuthentificationClient(login, password);
                     
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     PrintWriter out = response.getWriter();
-                    if(c != null){
+                    if(connectedClient != null){
                         printAnswerConnexion(out);
                     }
                     out.close();
@@ -83,12 +89,12 @@ public class ActionServletAccueil extends HttpServlet {
                     String login = request.getParameter("login");
                     String password = request.getParameter("password");
                     
-                    Employe e = AuthentificationEmploye(login, password);
+                    Employe connectedEmploye = AuthentificationEmploye(login, password);
                     
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     PrintWriter out = response.getWriter();
-                    if(e != null){
+                    if(connectedEmploye != null){
                         printAnswerConnexion(out);
                     }
                     out.close();
