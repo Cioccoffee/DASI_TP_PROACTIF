@@ -13,11 +13,13 @@ and open the template in the editor.
     </head>
     <body>
         <h1>Proact'IF</h1>
+        connecté en tant que <p id="nom-client"></p>
+        <!--afficher nom client-->
         <button id="bouton-deconnexion-client">Deconnexion</button>
         <button id="bouton-menu-client">Menu</button>
         <h2>Historique des interventions demandées</h2>
         <!ld>
-        <div id="div-historique" style="overflow:auto; height:400px; width:400px;">
+        <div id="div-historique" style="overflow:auto; height:100px; width:400px;">
             liste <br>
             liste <br>
             liste <br>
@@ -26,6 +28,9 @@ and open the template in the editor.
             liste <br>
             
         </div>
+        <ul id="historique">
+            
+        </ul>
         <h2>Demande d'intervention</h2>
         <button id="bouton-intervention-animal">Animal</button>
         <button id="bouton-intervention-livraison">Livraison</button>
@@ -61,8 +66,66 @@ and open the template in the editor.
                     $('#message').html('Echec de la deconnexion');
                 });
             }
+            function historique() { 
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getHistoriqueClient'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    // ici votre code...
+                    // 
+                    var historique = data.historique;
+                    //on veut afficher avec un for each
+                    //date + type => transformer date
+                    //details
+                    var historiqueHtml = $("#historique");
+                    $.each(historique, function(i,historique){
+                        historiqueHtml.append('<li>'
+                            /*+historique.debut.jour+"/"
+                            +historique.debut.mois+"/"
+                            +historique.debut.an+" "
+                            +historique.debut.heure+"h"
+                            +historique.debut.minutes+" "*/
+                            +historique.debut+" "
+                            +historique.type+'</li>');
+                    }
+                            );
+                    // si connexion ok, aller sur la page suivante :
+                    //window.location = "Accueil.html";
+                    // si connexion pas ok afficher un texte dans la div message :
+                    
+                }).fail(function () {
+                    // ici votre code...
+                    
+                    // si connexion pas ok afficher un texte dans la div message :
+                    $('#message').html('Echec de la récupération de lhistorique');
+                });
+            }
+            
+            function getNomClient(){
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getNomClient'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    var client = data.client;
+                    $('#nom-client').html(client.nom+" "+client.prenom);
+                }).fail(function () {
+                    $('#nom-client').html("pas trouvé");
+                });
+            }
             
             $(document).ready(function () {
+                getNomClient();
+                historique();
+                
                 // ajout d'un "handler" sur le clic du bouton de connexion
                 $('#bouton-deconnexion-client').on('click', function () {
                     // affichage pour debugage dans la console javascript du navigateur

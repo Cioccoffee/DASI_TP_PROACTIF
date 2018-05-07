@@ -12,13 +12,20 @@ import com.google.gson.JsonObject;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.Animal;
 import modele.Client;
 import modele.Employe;
+import modele.Intervention;
+import modele.Livraison;
 import static service.ServiceAppli.AuthentificationClient;
 import static service.ServiceAppli.AuthentificationEmploye;
 
@@ -40,8 +47,8 @@ public class ActionServlet extends HttpServlet {
      */
     
     //attributs qui doivent être gérés à l'échelle de l'application
-    Client connectedClient;
-    Employe connectedEmploye;
+    static Client connectedClient;
+    static Employe connectedEmploye;
     
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -69,7 +76,7 @@ public class ActionServlet extends HttpServlet {
                     String login = request.getParameter("login");
                     String password = request.getParameter("password");
                     
-                    Client connectedClient = AuthentificationClient(login, password);
+                    connectedClient = AuthentificationClient(login, password);
                     
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -89,7 +96,7 @@ public class ActionServlet extends HttpServlet {
                     String login = request.getParameter("login");
                     String password = request.getParameter("password");
                     
-                    Employe connectedEmploye = AuthentificationEmploye(login, password);
+                    connectedEmploye = AuthentificationEmploye(login, password);
                     
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -118,6 +125,23 @@ public class ActionServlet extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
                 printAnswerConnexion(out);
+                out.close();
+                break;
+            
+            case "getNomClient":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                printAnswerNomClient(out);
+                out.close();
+                break;
+                
+            case "getHistoriqueClient":
+                List<Intervention> li = connectedClient.getInterventionsDemandees();
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                printAnswerHistorique(out,li);
                 out.close();
                 break;
                 
@@ -186,6 +210,66 @@ public class ActionServlet extends HttpServlet {
         
         JsonObject container = new JsonObject();
         container.add("res",jo);
+        out.println(gson.toJson(container));
+    }
+    
+    public static void printAnswerNomClient(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            jo.addProperty("nom",connectedClient.getNom());
+            jo.addProperty("prenom",connectedClient.getPrenom());
+        }else{
+            jo.addProperty("nom","nom");
+            jo.addProperty("prenom","prenom");
+        }
+        
+        JsonObject container = new JsonObject();
+        container.add("client",jo);
+        
+        out.println(gson.toJson(container));
+    }
+    
+    public static void printAnswerHistorique(PrintWriter out, List<Intervention> li){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonArray ja = new JsonArray();
+        for(Intervention i : li){
+            JsonObject jo = new JsonObject();
+            //JsonObject debut = new JsonObject();
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            String debutstr = df.format(i.getDateDeDebut());
+            /*debut.addProperty("jour", i.getDateDeDebut().toString());
+            debut.addProperty("jour", i.getDateDeDebut().getDate());
+            debut.addProperty("mois", i.getDateDeDebut().getMonth());
+            debut.addProperty("an", i.getDateDeDebut().getYear());
+            debut.addProperty("heure", i.getDateDeDebut().getHours());
+            debut.addProperty("minutes", i.getDateDeDebut().getMinutes());
+            jo.add("debut",debut);*/
+            jo.addProperty("debut",debutstr);
+            //nb of ms since jan 1st 1970, GMT
+            jo.addProperty("description",i.getDescription());
+            jo.addProperty("rapport",i.getRapport());
+            
+            if(i instanceof Animal){
+                jo.addProperty("type","Animal");
+                jo.addProperty("animal",((Animal) i).getType());
+            }else if(i instanceof Livraison){
+                jo.addProperty("type","Livraison");
+                jo.addProperty("objet",((Livraison)i).getObjet());
+                jo.addProperty("prestataire",((Livraison) i).getPrestataire());
+            }else{
+                jo.addProperty("type","Incident");
+            }
+            //pas de propriétés particulières pour indicent = c'est juste une intervention
+            
+            ja.add(jo);
+        }
+        
+        JsonObject container = new JsonObject();
+        container.add("historique",ja);
         out.println(gson.toJson(container));
     }
 
