@@ -35,8 +35,8 @@ and open the template in the editor.
         <button id="bouton-intervention-animal">Animal</button>
         <button id="bouton-intervention-livraison">Livraison</button>
         <button id="bouton-intervention-incident">Incident</button><br>
-        Type d'animal : <input type="text" id="champ-login" name="type-animal" placeholder="Type d'animal" /><br>
-        Description : <input type="text" id="champ-login" name="description" placeholder="votre identifiant" /><br>
+        Type d'animal : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type d'animal" /><br>
+        Description : <input type="text" id="champ-description-intervention" name="description" placeholder="Description" /><br>
         <button id="bouton-intervention-valider">Valider</button>
         <div>TODO write content</div>
         
@@ -66,6 +66,7 @@ and open the template in the editor.
                     $('#message').html('Echec de la deconnexion');
                 });
             }
+            
             function historique() { 
                 
                 $.ajax({
@@ -85,12 +86,7 @@ and open the template in the editor.
                     var historiqueHtml = $("#historique");
                     $.each(historique, function(i,historique){
                         historiqueHtml.append('<li>'
-                            /*+historique.debut.jour+"/"
-                            +historique.debut.mois+"/"
-                            +historique.debut.an+" "
-                            +historique.debut.heure+"h"
-                            +historique.debut.minutes+" "*/
-                            +historique.debut+" "
+                            +historique.debut+" - "
                             +historique.type+'</li>');
                     }
                             );
@@ -112,6 +108,25 @@ and open the template in the editor.
                     method: 'GET',
                     data: {
                         action: 'getNomClient'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    var client = data.client;
+                    $('#nom-client').html(client.nom+" "+client.prenom);
+                }).fail(function () {
+                    $('#nom-client').html("pas trouvé");
+                });
+            }
+            
+            function demanderIntervention(){
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'demanderIntervention',
+                        animal: $('#champ-type-animal').val(),
+                        description: $('#champ-description-intervention').val()
+                        
                     },
                     dataType: 'json'
                 }).done(function (data) {

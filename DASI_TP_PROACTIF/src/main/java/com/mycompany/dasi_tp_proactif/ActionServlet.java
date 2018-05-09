@@ -239,15 +239,8 @@ public class ActionServlet extends HttpServlet {
         for(Intervention i : li){
             JsonObject jo = new JsonObject();
             //JsonObject debut = new JsonObject();
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-            String debutstr = df.format(i.getDateDeDebut());
-            /*debut.addProperty("jour", i.getDateDeDebut().toString());
-            debut.addProperty("jour", i.getDateDeDebut().getDate());
-            debut.addProperty("mois", i.getDateDeDebut().getMonth());
-            debut.addProperty("an", i.getDateDeDebut().getYear());
-            debut.addProperty("heure", i.getDateDeDebut().getHours());
-            debut.addProperty("minutes", i.getDateDeDebut().getMinutes());
-            jo.add("debut",debut);*/
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh'h'mm");
+            String debutstr = sdf.format(i.getDateDeDebut());
             jo.addProperty("debut",debutstr);
             //nb of ms since jan 1st 1970, GMT
             jo.addProperty("description",i.getDescription());
