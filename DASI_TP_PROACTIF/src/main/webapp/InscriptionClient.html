@@ -8,21 +8,22 @@ and open the template in the editor.
     <head>
         <title>InscriptionClient</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width">
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"> </script>
     </head>
     <body>
         <h1>1.Identite</h1>
         Nom <br> <input type="text" id="nom" name="nom" placeholder="nom" />
         <br>
-        Prenom <br> <input type="password" id="prenom" name="prenom" placeholder="prenom"/>
+        Prenom <br> <input type="text" id="prenom" name="prenom" placeholder="prenom"/>
         <br>
         Civilite Date de naissance
         <br>
-        <select>
+        <select id="civilite">
             <option>Mr</option>
             <option>Mme</option>
         </select>
-        <input type="date" />
+        <input id="date" type="date" />
         <br>
         <h1>2.Coordonnees</h1>
         Pays <br> <input type="text" id="pays" name="pays" placeholder="pays" />
@@ -41,8 +42,68 @@ and open the template in the editor.
         <h1>3.Compte</h1>
         E-mail : <input type="text" id="email" name="email" 
                         placeholder="E-mail" /><br>
-        Mot de passe : <input type="password" id="champ-password" name="password"
+        Mot de passe : <input type="password" id="password" name="password"
                         placeholder="mot de passe"/><br>
-        <button id="bouton-connexion-client">Créer mon compte</button>
+        <button id="bouton-inscription-client">Créer mon compte</button>
+        
+        <script>
+
+            function inscriptionClient() {
+                var champNom = $('#nom').val();
+                var champPrenom = $('#prenom').val();
+                var champCivilite = $('#civilite').val();
+                var champDate = $('#date').val();
+                var champPays = $('#pays').val();
+                var champRue = $('#rue').val();
+                var champVille = $('#ville').val();
+                var champCodePostal = $('#codePostal').val();
+                var champTelephone = $('#telephone').val();
+                var champMail = $('#email').val();
+                var champPassword = $('#password').val();
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'inscireClient',
+                        nom: champNom,
+                        prenom: champPrenom,
+                        civilite: champCivilite,
+                        date: champDate,
+                        pays: champPays,
+                        rue: champRue,
+                        ville: champVille,
+                        codePostal: champCodePostal,
+                        telephone: champTelephone,
+                        mail: champMail,
+                        password: champPassword
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    // ici votre code...
+                    // 
+                    // si inscription ok, aller sur la page suivante :
+                    $('#message').html('Client inscrit');
+                    console.log('Client inscrit');
+                    // si inscription pas ok afficher un texte dans la div message :
+                    
+                }).fail(function () {
+                    // ici votre code...
+                    // si connexion pas ok afficher un texte dans la div message :
+                    $('#message').html('Echec d\'inscription');
+                    console.log('Echec d\'inscription');
+                });
+            }
+            
+            $(document).ready(function () {
+                // ajout d'un "handler" sur le clic du bouton de connexion
+                $('#bouton-inscription-client').on('click', function () {
+                    // affichage pour debugage dans la console javascript du navigateur
+                    console.log('Click sur le bouton "Créer mon compte"');
+                    // appel de la fonction inscription
+                    inscriptionClient();
+                });
+            });
+        </script>
     </body>
 </html>
