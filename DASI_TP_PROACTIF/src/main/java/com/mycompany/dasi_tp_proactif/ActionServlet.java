@@ -13,9 +13,13 @@ import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +32,7 @@ import modele.Intervention;
 import modele.Livraison;
 import static service.ServiceAppli.AuthentificationClient;
 import static service.ServiceAppli.AuthentificationEmploye;
+import static service.ServiceAppli.InscriptionClient;
 
 /**
  *
@@ -52,7 +57,7 @@ public class ActionServlet extends HttpServlet {
     
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
 //        response.setContentType("text/html;charset=UTF-8");
 //        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
@@ -145,6 +150,39 @@ public class ActionServlet extends HttpServlet {
                 out.close();
                 break;
                 
+            case "inscrireClient":
+                System.out.println("Inscription: ");
+                String nom = request.getParameter("nom");
+                String prenom = request.getParameter("prenom");
+                String civilite = request.getParameter("civilite");
+                String date = request.getParameter("date");
+                System.out.println(date);
+                String pays = request.getParameter("pays");
+                String rue = request.getParameter("rue");
+                String ville = request.getParameter("ville");
+                String codePostal = request.getParameter("codePostal");
+                String telephone = request.getParameter("telephone");
+                String mail = request.getParameter("mail");
+                String password = request.getParameter("password");
+
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                Date d = sf.parse(date);
+                String resDate = df.format(d);
+
+
+                Client newClient = new Client(nom, prenom, 
+                            civilite, resDate, telephone, codePostal,
+                            mail, password);
+
+                InscriptionClient(newClient);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                printAnswerInscription(out);
+                out.close();
+                break;
+                
             default :
                 break;
         }
@@ -163,7 +201,11 @@ public class ActionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -177,7 +219,11 @@ public class ActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -263,6 +309,17 @@ public class ActionServlet extends HttpServlet {
         
         JsonObject container = new JsonObject();
         container.add("historique",ja);
+        out.println(gson.toJson(container));
+    }
+    
+    public static void printAnswerInscription(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        jo.addProperty("Reussie","");
+        
+        JsonObject container = new JsonObject();
+        container.add("inscription: ",jo);
         out.println(gson.toJson(container));
     }
 
