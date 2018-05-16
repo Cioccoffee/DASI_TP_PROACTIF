@@ -130,24 +130,83 @@ and open the template in the editor.
         }
 
         function demanderIntervention() {
+            
+            //appelle la bonne demande car nb de params différent
+            var intervention = $('#champ-type-intervention').val();
+            switch(intervention){
+                case "animal":
+                    
+                    break;
+                case "livraison":
+                    
+                    break;
+                case "incident":
+                    
+                    break;
+                
+            }
+            
+        }
+
+        function demanderInterventionAnimal() {
             $.ajax({
                 url: './ActionServlet',
                 method: 'POST',
                 data: {
-                    action: 'demanderIntervention',
+                    action: 'demanderInterventionAnimal',
                     animal: $('#champ-type-animal').val(),
                     description: $('#champ-description-intervention').val()
-
                 },
                 dataType: 'json'
             }).done(function (data) {
-                var client = data.client;
-                $('#nom-client').html(client.nom + " " + client.prenom);
+                //Ajouter nouvelle ligne dans l'historique si intervention
+                //bien attribuée
+                //vider les champs
             }).fail(function () {
-                $('#nom-client').html("pas trouvé");
             });
+        
         }
-
+        
+        function demanderInterventionLivraison() {
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    action: 'demanderInterventionLivraison',
+                    animal: $('#champ-prestataire').val(),
+                    objet: $('#champ-objet').val(),
+                    description: $('#champ-description-intervention').val()
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                //Ajouter nouvelle ligne dans l'historique si intervention
+                //bien attribuée
+                //vider les champs
+            }).fail(function () {
+            });
+        
+        }
+        
+        function demanderInterventionIncident() {
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    action: 'demanderInterventionIncident',
+                    animal: $('#champ-type-incident').val(),
+                    description: $('#champ-description-intervention').val()
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                //Ajouter nouvelle ligne dans l'historique si intervention
+                //bien attribuée
+                //vider les champs
+            }).fail(function () {
+                
+            });
+        
+        }
+        
         function interventionAnimal() {
             $.ajax({
             }).done(function () {
@@ -162,26 +221,6 @@ and open the template in the editor.
                 //changer couleur bouton
                 ////chenger valeur action
                 //mettre les bons champs
-            }).fail(function () {
-                $('#nom-client').html("pas trouvé");
-            });
-        }
-        
-        function interventionIncident() {
-            $.ajax({
-            }).done(function () {
-                //set le bouton précédent à la couleur normale
-                var currentButton = $('#champ-type-intervention').val();
-                $('#bouton-intervention-'+currentButton+'').attr("style","background-color:white");
-                //changer couleur bouton
-                $('#bouton-intervention-incident').attr("style","color:white;background-color:blue");
-                //changer valeur action
-                $('#champ-type-intervention').attr("value","incident");
-                //mettre les bons champs
-                $('#div-champs-intervention-specifiques').html('Type dincident : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type dincident" /><br>');
-                
-                
-                
             }).fail(function () {
                 $('#nom-client').html("pas trouvé");
             });
@@ -209,6 +248,27 @@ and open the template in the editor.
                 $('#nom-client').html("pas trouvé");
             });
         }
+        
+        function interventionIncident() {
+            $.ajax({
+            }).done(function () {
+                //set le bouton précédent à la couleur normale
+                var currentButton = $('#champ-type-intervention').val();
+                $('#bouton-intervention-'+currentButton+'').attr("style","background-color:white");
+                //changer couleur bouton
+                $('#bouton-intervention-incident').attr("style","color:white;background-color:blue");
+                //changer valeur action
+                $('#champ-type-intervention').attr("value","incident");
+                //mettre les bons champs
+                $('#div-champs-intervention-specifiques').html('Type d\'incident : <input type="text" id="champ-type-incident" name="type-animal" placeholder="Type d\'incident" /><br>');
+                
+                
+                
+            }).fail(function () {
+                $('#nom-client').html("pas trouvé");
+            });
+        }
+        
 
         $(document).ready(function () {
             getNomClient();
