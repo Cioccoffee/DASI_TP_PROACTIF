@@ -5,31 +5,35 @@
  */
 package com.mycompany.dasi_tp_proactif;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+
+
+
+
+import actions.ActionConnecterClient;
+import actions.ActionConnecterEmploye;
 import dao.JpaUtil;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import modele.Animal;
 import modele.Client;
 import modele.Employe;
 import modele.Intervention;
 import modele.Livraison;
+
 import static service.ServiceAppli.AuthentificationClient;
 import static service.ServiceAppli.AuthentificationEmploye;
 import static service.ServiceAppli.InscriptionClient;
@@ -76,20 +80,17 @@ public class ActionServlet extends HttpServlet {
         switch(action){
             case "connecterClient" :
                 
-                
                 try{
-                    String login = request.getParameter("login");
-                    String password = request.getParameter("password");
-                    
-                    connectedClient = AuthentificationClient(login, password);
+                    connectedClient = ActionConnecterClient.execute(request);
                     
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     PrintWriter out = response.getWriter();
                     if(connectedClient != null){
-                        printAnswerConnexion(out);
+                        Serializer.printAnswerConnexion(out);
                     }
                     out.close();
+                    
                 }catch(Exception ex){
                     throw new ServletException("Data access problem",ex);
                 }
@@ -98,16 +99,14 @@ public class ActionServlet extends HttpServlet {
                 
             case "connecterEmploye":
                 try{
-                    String login = request.getParameter("login");
-                    String password = request.getParameter("password");
                     
-                    connectedEmploye = AuthentificationEmploye(login, password);
+                    connectedEmploye = ActionConnecterEmploye.execute(request);
                     
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     PrintWriter out = response.getWriter();
                     if(connectedEmploye != null){
-                        printAnswerConnexion(out);
+                        Serializer.printAnswerConnexion(out);
                     }
                     out.close();
                 }catch(Exception ex){
@@ -120,7 +119,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter out = response.getWriter();
-                printAnswerConnexion(out);
+                Serializer.printAnswerConnexion(out);
                 out.close();
                 break;
                 
@@ -129,7 +128,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                printAnswerConnexion(out);
+                Serializer.printAnswerConnexion(out);
                 out.close();
                 break;
             
@@ -137,7 +136,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                printAnswerNomClient(out);
+                Serializer.printAnswerNomClient(out);
                 out.close();
                 break;
                 
@@ -146,7 +145,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                printAnswerHistorique(out,li);
+                Serializer.printAnswerHistorique(out,li);
                 out.close();
                 break;
                 
@@ -179,7 +178,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                printAnswerInscription(out);
+                Serializer.printAnswerInscription(out);
                 out.close();
                 break;
                 
@@ -248,79 +247,5 @@ public class ActionServlet extends HttpServlet {
         JpaUtil.destroy();
     }
     
-    public static void printAnswerConnexion(PrintWriter out){
-        
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonObject jo = new JsonObject();
-        jo.addProperty("res","");
-        
-        JsonObject container = new JsonObject();
-        container.add("res",jo);
-        out.println(gson.toJson(container));
-    }
     
-    public static void printAnswerNomClient(PrintWriter out){
-        
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        
-        JsonObject jo = new JsonObject();
-        if(connectedClient != null){
-            jo.addProperty("nom",connectedClient.getNom());
-            jo.addProperty("prenom",connectedClient.getPrenom());
-        }else{
-            jo.addProperty("nom","nom");
-            jo.addProperty("prenom","prenom");
-        }
-        
-        JsonObject container = new JsonObject();
-        container.add("client",jo);
-        
-        out.println(gson.toJson(container));
-    }
-    
-    public static void printAnswerHistorique(PrintWriter out, List<Intervention> li){
-        
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonArray ja = new JsonArray();
-        for(Intervention i : li){
-            JsonObject jo = new JsonObject();
-            //JsonObject debut = new JsonObject();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh'h'mm");
-            String debutstr = sdf.format(i.getDateDeDebut());
-            jo.addProperty("debut",debutstr);
-            //nb of ms since jan 1st 1970, GMT
-            jo.addProperty("description",i.getDescription());
-            jo.addProperty("rapport",i.getRapport());
-            
-            if(i instanceof Animal){
-                jo.addProperty("type","Animal");
-                jo.addProperty("animal",((Animal) i).getType());
-            }else if(i instanceof Livraison){
-                jo.addProperty("type","Livraison");
-                jo.addProperty("objet",((Livraison)i).getObjet());
-                jo.addProperty("prestataire",((Livraison) i).getPrestataire());
-            }else{
-                jo.addProperty("type","Incident");
-            }
-            //pas de propriétés particulières pour indicent = c'est juste une intervention
-            
-            ja.add(jo);
-        }
-        
-        JsonObject container = new JsonObject();
-        container.add("historique",ja);
-        out.println(gson.toJson(container));
-    }
-    
-    public static void printAnswerInscription(PrintWriter out){
-        
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonObject jo = new JsonObject();
-        jo.addProperty("Reussie","");
-        
-        JsonObject container = new JsonObject();
-        container.add("inscription: ",jo);
-        out.println(gson.toJson(container));
-    }
-
 }
