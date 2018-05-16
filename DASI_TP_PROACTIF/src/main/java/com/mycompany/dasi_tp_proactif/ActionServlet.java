@@ -11,6 +11,7 @@ package com.mycompany.dasi_tp_proactif;
 
 import actions.ActionConnecterClient;
 import actions.ActionConnecterEmploye;
+import actions.ActionInterventionAnimal;
 import dao.JpaUtil;
 
 import java.io.IOException;
@@ -147,6 +148,24 @@ public class ActionServlet extends HttpServlet {
                 out = response.getWriter();
                 Serializer.printAnswerHistorique(out,li);
                 out.close();
+                break;
+                
+            // ces actions retournent un employé
+            case "demanderInterventionAnimal":
+                Employe e = ActionInterventionAnimal.execute(request,connectedClient);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerIntervention(out,e);
+                out.close();
+                break;
+                
+            case "demanderInterventionLivraison":
+                
+                break;
+                
+            case "demanderInterventionIncident":
+                
                 break;
                 
             case "inscrireClient":

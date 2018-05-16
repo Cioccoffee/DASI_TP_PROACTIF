@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import modele.Animal;
+import modele.Employe;
 import modele.Intervention;
 import modele.Livraison;
 
@@ -101,6 +102,21 @@ public class Serializer {
         
         JsonObject container = new JsonObject();
         container.add("historique",ja);
+        out.println(gson.toJson(container));
+    }
+    
+    public static void printAnswerIntervention(PrintWriter out, Employe e){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        if(e==null){
+            jo.addProperty("success","false");
+        }else{
+            jo.addProperty("success","true");
+        }
+        
+        JsonObject container = new JsonObject();
+        container.add("res",jo);
         out.println(gson.toJson(container));
     }
     
