@@ -19,138 +19,197 @@ and open the template in the editor.
         <button id="bouton-menu-client">Menu</button>
         <h2>Historique des interventions demandées</h2>
         <!ld>
-        <div id="div-historique" style="overflow:auto; height:100px; width:400px;">
-            liste <br>
-            liste <br>
-            liste <br>
-            liste <br>
-            liste <br>
-            liste <br>
-            
-        </div>
-        <ul id="historique">
-            
-        </ul>
+    <div id="div-historique" style="overflow:auto; height:100px; width:400px;">
+        liste <br>
+        liste <br>
+        liste <br>
+        liste <br>
+        liste <br>
+        liste <br>
+
+    </div>
+    <ul id="historique">
+
+    </ul>
+
+    <div id="div-intervention">
         <h2>Demande d'intervention</h2>
-        <button id="bouton-intervention-animal">Animal</button>
-        <button id="bouton-intervention-livraison">Livraison</button>
-        <button id="bouton-intervention-incident">Incident</button><br>
-        Type d'animal : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type d'animal" /><br>
-        Description : <input type="text" id="champ-description-intervention" name="description" placeholder="Description" /><br>
+        <div id="div-choix-intervention" >
+            <button id="bouton-intervention-animal" style="color:blue" onclick="interventionAnimal()">Animal</button>
+            <button id="bouton-intervention-livraison" style="" onclick="interventionLivraison()">Livraison</button>
+            <button id="bouton-intervention-incident" style="" onclick="interventionIncident()">Incident</button><br>
+        </div>
+        <div id="div-champs-intervention">
+            <input type="hidden" id="champ-type-intervention" name="intervention" value="animal" />
+            <div id="div-champs-intervention-specifiques">
+                Type d'animal : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type d'animal" /><br>
+            </div>
+            Description : <input type="text" id="champ-description-intervention" name="description" placeholder="Description" /><br>
+        </div>
         <button id="bouton-intervention-valider">Valider</button>
-        <div>TODO write content</div>
-        
-        <script>
+    </div>
 
-            function deconnexionClient() { 
-                $('#message').html('Connexion en cours...');
+    <div>TODO write content</div>
 
-                $.ajax({
-                    url: './ActionServlet',
-                    method: 'POST',
-                    data: {
-                        action: 'deconnecterClient'
-                    },
-                    dataType: 'json'
-                }).done(function (data) {
-                    // ici votre code...
-                    // 
-                    // si connexion ok, aller sur la page suivante :
-                    window.location = "Accueil.html";
-                    // si connexion pas ok afficher un texte dans la div message :
-                    
-                }).fail(function () {
-                    // ici votre code...
-                    
-                    // si connexion pas ok afficher un texte dans la div message :
-                    $('#message').html('Echec de la deconnexion');
-                });
-            }
-            
-            function historique() { 
-                
-                $.ajax({
-                    url: './ActionServlet',
-                    method: 'GET',
-                    data: {
-                        action: 'getHistoriqueClient'
-                    },
-                    dataType: 'json'
-                }).done(function (data) {
-                    // ici votre code...
-                    // 
-                    var historique = data.historique;
-                    //on veut afficher avec un for each
-                    //date + type => transformer date
-                    //details
-                    var historiqueHtml = $("#historique");
-                    $.each(historique, function(i,historique){
-                        historiqueHtml.append('<li>'
-                            +historique.debut+" - "
-                            +historique.type+'</li>');
-                    }
-                            );
-                    // si connexion ok, aller sur la page suivante :
-                    //window.location = "Accueil.html";
-                    // si connexion pas ok afficher un texte dans la div message :
-                    
-                }).fail(function () {
-                    // ici votre code...
-                    
-                    // si connexion pas ok afficher un texte dans la div message :
-                    $('#message').html('Echec de la récupération de lhistorique');
-                });
-            }
-            
-            function getNomClient(){
-                $.ajax({
-                    url: './ActionServlet',
-                    method: 'GET',
-                    data: {
-                        action: 'getNomClient'
-                    },
-                    dataType: 'json'
-                }).done(function (data) {
-                    var client = data.client;
-                    $('#nom-client').html(client.nom+" "+client.prenom);
-                }).fail(function () {
-                    $('#nom-client').html("pas trouvé");
-                });
-            }
-            
-            function demanderIntervention(){
-                $.ajax({
-                    url: './ActionServlet',
-                    method: 'POST',
-                    data: {
-                        action: 'demanderIntervention',
-                        animal: $('#champ-type-animal').val(),
-                        description: $('#champ-description-intervention').val()
-                        
-                    },
-                    dataType: 'json'
-                }).done(function (data) {
-                    var client = data.client;
-                    $('#nom-client').html(client.nom+" "+client.prenom);
-                }).fail(function () {
-                    $('#nom-client').html("pas trouvé");
-                });
-            }
-            
-            $(document).ready(function () {
-                getNomClient();
-                historique();
-                
-                // ajout d'un "handler" sur le clic du bouton de connexion
-                $('#bouton-deconnexion-client').on('click', function () {
-                    // affichage pour debugage dans la console javascript du navigateur
-                    console.log('Click sur le bouton "Déconnection"');
-                    // appel de la fonction connexion
-                    deconnexionClient();
-                });
+    <script>
+
+        function deconnexionClient() {
+            $('#message').html('Connexion en cours...');
+
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    action: 'deconnecterClient'
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                // ici votre code...
+                // 
+                // si connexion ok, aller sur la page suivante :
+                window.location = "Accueil.html";
+                // si connexion pas ok afficher un texte dans la div message :
+
+            }).fail(function () {
+                // ici votre code...
+
+                // si connexion pas ok afficher un texte dans la div message :
+                $('#message').html('Echec de la deconnexion');
             });
-            
-        </script>
+        }
+
+        function historique() {
+
+            $.ajax({
+                url: './ActionServlet',
+                method: 'GET',
+                data: {
+                    action: 'getHistoriqueClient'
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                // ici votre code...
+                // 
+                var historique = data.historique;
+                //on veut afficher avec un for each
+                //date + type => transformer date
+                //details
+                var historiqueHtml = $("#historique");
+                $.each(historique, function (i, historique) {
+                    historiqueHtml.append('<li>'
+                            + historique.debut + " - "
+                            + historique.type + '</li>');
+                }
+                );
+                // si connexion ok, aller sur la page suivante :
+                //window.location = "Accueil.html";
+                // si connexion pas ok afficher un texte dans la div message :
+
+            }).fail(function () {
+                // ici votre code...
+
+                // si connexion pas ok afficher un texte dans la div message :
+                $('#message').html('Echec de la récupération de lhistorique');
+            });
+        }
+
+        function getNomClient() {
+            $.ajax({
+                url: './ActionServlet',
+                method: 'GET',
+                data: {
+                    action: 'getNomClient'
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                var client = data.client;
+                $('#nom-client').html(client.nom + " " + client.prenom);
+            }).fail(function () {
+                $('#nom-client').html("pas trouvé");
+            });
+        }
+
+        function demanderIntervention() {
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    action: 'demanderIntervention',
+                    animal: $('#champ-type-animal').val(),
+                    description: $('#champ-description-intervention').val()
+
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                var client = data.client;
+                $('#nom-client').html(client.nom + " " + client.prenom);
+            }).fail(function () {
+                $('#nom-client').html("pas trouvé");
+            });
+        }
+
+        function interventionAnimal() {
+            $.ajax({
+            }).done(function () {
+                //get value intervention actuelle
+                //switch btn en blue to white
+                var currentButton = $('#champ-type-intervention')[2];
+                $('#bouton-intervention-'+currentButton).attr("style","background-color:white");
+                
+                $('#bouton-intervention-animal').attr("style","background-color:blue");
+                $('#div-champs-intervention-specifiques').html('Type danimal : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type danimal" /><br>');
+                //changer couleur bouton
+                ////chenger valeur action
+                //mettre les bons champs
+            }).fail(function () {
+                $('#nom-client').html("pas trouvé");
+            });
+        }
         
-    </body>
+        function interventionIncident() {
+            $.ajax({
+            }).done(function () {
+                $('#bouton-intervention-incident').attr("style","background-color:blue");
+                $('#div-champs-intervention-specifiques').html('Type dincident : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type dincident" /><br>');
+                //changer couleur bouton
+                ////chenger valeur action
+                //mettre les bons champs
+            }).fail(function () {
+                $('#nom-client').html("pas trouvé");
+            });
+        }
+        
+        function interventionLivraison() {
+            $.ajax({
+            }).done(function () {
+                $('#bouton-intervention-livraison').attr("style","background-color:blue");
+                $('#div-champs-intervention-specifiques').html(
+                        'Prestataire : <input type="text" id="champ-prestataire" name="prestataire" placeholder="prestataire" /><br>'
+                        +'Objet : <input type="text" id="champ-objet" name="objet" placeholder="objet" /><br>'
+                        );
+                $('#champ-type-intervention').attr("value","livraison");
+                //changer couleur bouton
+                ////changer val
+                //mettre les bons champs
+            }).fail(function () {
+                $('#nom-client').html("pas trouvé");
+            });
+        }
+
+        $(document).ready(function () {
+            getNomClient();
+            historique();
+
+            // ajout d'un "handler" sur le clic du bouton de connexion
+            $('#bouton-deconnexion-client').on('click', function () {
+                // affichage pour debugage dans la console javascript du navigateur
+                console.log('Click sur le bouton "Déconnection"');
+                // appel de la fonction connexion
+                deconnexionClient();
+            });
+        });
+
+    </script>
+
+</body>
 </html>
