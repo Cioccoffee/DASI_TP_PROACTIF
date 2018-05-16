@@ -12,6 +12,8 @@ and open the template in the editor.
         <script src="https://code.jquery.com/jquery-1.12.1.min.js"> </script>
     </head>
     <body>
+        <a href="Accueil.html"><img src="Proact'IF.png"></a>
+        <input type="button" value="Connexion" onclick="window.location.href='MenuConnexion.html';"/>
         <h1>1.Identite</h1>
         Nom <br> <input type="text" id="nom" name="nom" placeholder="nom" />
         <br>
@@ -45,10 +47,12 @@ and open the template in the editor.
         Mot de passe : <input type="password" id="password" name="password"
                         placeholder="mot de passe"/><br>
         <button id="bouton-inscription-client">Créer mon compte</button>
+        <div id="message"></div>
         
         <script>
 
             function inscriptionClient() {
+                $('#message').html('Insription en cours...');
                 var champNom = $('#nom').val();
                 var champPrenom = $('#prenom').val();
                 var champCivilite = $('#civilite').val();
@@ -63,9 +67,9 @@ and open the template in the editor.
                 
                 $.ajax({
                     url: './ActionServlet',
-                    method: 'POST',
+                    method: 'GET',
                     data: {
-                        action: 'inscireClient',
+                        action: 'inscrireClient',
                         nom: champNom,
                         prenom: champPrenom,
                         civilite: champCivilite,
@@ -80,16 +84,10 @@ and open the template in the editor.
                     },
                     dataType: 'json'
                 }).done(function (data) {
-                    // ici votre code...
-                    // 
-                    // si inscription ok, aller sur la page suivante :
                     $('#message').html('Client inscrit');
                     console.log('Client inscrit');
-                    // si inscription pas ok afficher un texte dans la div message :
                     
                 }).fail(function () {
-                    // ici votre code...
-                    // si connexion pas ok afficher un texte dans la div message :
                     $('#message').html('Echec d\'inscription');
                     console.log('Echec d\'inscription');
                 });

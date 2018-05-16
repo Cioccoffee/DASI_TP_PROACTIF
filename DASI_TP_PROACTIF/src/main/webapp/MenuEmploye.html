@@ -6,11 +6,112 @@ and open the template in the editor.
 -->
 <html>
     <head>
+        <style>
+            html,body{
+                height: 100%;
+            }
+            #container{
+                height: 100%;
+                width: 100%;
+                font-size: 0;
+                margin: 0 auto;
+            }
+            .item{
+                display: inline-block;
+                vertical-align: top;
+                background: #00BF1D;
+                height: 100%;
+                width: 60%;
+            }
+            .item:nth-child(2){
+                float: right;
+                width: 40%;
+                background: #F4CAAE;
+            }
+            .button{
+                background-color: blue;
+                color: white;
+                border: 2px solid black; 
+                cursor: pointer;
+                padding: 10px 16px;
+            }
+            nav {
+                max-width: 800px;
+                margin: 0;
+                padding: 1em;
+            }
+
+            nav ul {
+                list-style-type: none;
+                padding: 0;
+                text-decoration: none;
+            }
+            ul{
+                margin:50px;
+            }
+            .liButton{
+                text-align: center;
+            }
+            .time{
+                width: 15px;
+            }
+            .commentaire{
+                width: 400px;
+                height: 100px;
+                resize: none;
+            }
+            .table{
+                margin: 40px;
+            }
+        </style>
         <title>MenuEmploye</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <div class="container">
+            <div class="item">
+                <h1 align="center">Interventions du jour</h1>
+            </div>
+            <div class="item">
+                <h2 align="center">Intervention en cours</h2>
+                <table class="table" border="0px">
+                    <tr>
+                        <td>Adresse:</td> 
+                        <td><div id="adresse"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Demande:</td> 
+                        <td><div id="date"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Client:</td>
+                        <td><div id="client"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Type:</td>
+                        <td><div id="typeIntervention"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Description:</td> 
+                        <td><div id="description"></div></td>
+                    </tr>
+                </table>
+                <h2 align="center">Validation d'intervention</h2>
+                <nav>
+                    <ul>
+                        <li>Heure de fin: <input class="time" type="text" id="heure" 
+                                name="here">:<input class="time" type="text" id="minute" 
+                                name="minute"></li>
+                        <li>Commentaire:</li> 
+                        <li><textarea class="commentaire" id="commentaire" 
+                                    name="commentaire"></textarea></li>
+                        <li class="liButton"><button class="button" id="bouton-valider">
+                                Valider</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>    
     </body>
 </html>
