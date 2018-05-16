@@ -12,6 +12,8 @@ package com.mycompany.dasi_tp_proactif;
 import actions.ActionConnecterClient;
 import actions.ActionConnecterEmploye;
 import actions.ActionInterventionAnimal;
+import actions.ActionInterventionIncident;
+import actions.ActionInterventionLivraison;
 import dao.JpaUtil;
 
 import java.io.IOException;
@@ -161,11 +163,21 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "demanderInterventionLivraison":
-                
+                e = ActionInterventionLivraison.execute(request,connectedClient);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerIntervention(out,e);
+                out.close();
                 break;
                 
             case "demanderInterventionIncident":
-                
+                e = ActionInterventionIncident.execute(request,connectedClient);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerIntervention(out,e);
+                out.close();
                 break;
                 
             case "inscrireClient":
