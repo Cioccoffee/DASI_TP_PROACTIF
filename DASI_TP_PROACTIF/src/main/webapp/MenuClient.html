@@ -35,9 +35,9 @@ and open the template in the editor.
     <div id="div-intervention">
         <h2>Demande d'intervention</h2>
         <div id="div-choix-intervention" >
-            <button id="bouton-intervention-animal" style="color:blue" onclick="interventionAnimal()">Animal</button>
-            <button id="bouton-intervention-livraison" style="" onclick="interventionLivraison()">Livraison</button>
-            <button id="bouton-intervention-incident" style="" onclick="interventionIncident()">Incident</button><br>
+            <button id="bouton-intervention-animal" style="color:white;background-color:blue" onclick="interventionAnimal()">Animal</button>
+            <button id="bouton-intervention-livraison" style="background-color:white" onclick="interventionLivraison()">Livraison</button>
+            <button id="bouton-intervention-incident" style="background-color:white" onclick="interventionIncident()">Incident</button><br>
         </div>
         <div id="div-champs-intervention">
             <input type="hidden" id="champ-type-intervention" name="intervention" value="animal" />
@@ -46,7 +46,7 @@ and open the template in the editor.
             </div>
             Description : <input type="text" id="champ-description-intervention" name="description" placeholder="Description" /><br>
         </div>
-        <button id="bouton-intervention-valider">Valider</button>
+        <button id="bouton-intervention-valider" style="color:white;background-color:blue">Valider</button>
     </div>
 
     <div>TODO write content</div>
@@ -153,11 +153,12 @@ and open the template in the editor.
             }).done(function () {
                 //get value intervention actuelle
                 //switch btn en blue to white
-                var currentButton = $('#champ-type-intervention')[2];
-                $('#bouton-intervention-'+currentButton).attr("style","background-color:white");
+                var currentButton = $('#champ-type-intervention').val();
+                $('#bouton-intervention-'+currentButton+'').attr("style","background-color:white");
                 
-                $('#bouton-intervention-animal').attr("style","background-color:blue");
+                $('#bouton-intervention-animal').attr("style","color:white;background-color:blue");
                 $('#div-champs-intervention-specifiques').html('Type danimal : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type danimal" /><br>');
+                $('#champ-type-intervention').attr("value","animal");
                 //changer couleur bouton
                 ////chenger valeur action
                 //mettre les bons champs
@@ -169,11 +170,18 @@ and open the template in the editor.
         function interventionIncident() {
             $.ajax({
             }).done(function () {
-                $('#bouton-intervention-incident').attr("style","background-color:blue");
-                $('#div-champs-intervention-specifiques').html('Type dincident : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type dincident" /><br>');
+                //set le bouton précédent à la couleur normale
+                var currentButton = $('#champ-type-intervention').val();
+                $('#bouton-intervention-'+currentButton+'').attr("style","background-color:white");
                 //changer couleur bouton
-                ////chenger valeur action
+                $('#bouton-intervention-incident').attr("style","color:white;background-color:blue");
+                //changer valeur action
+                $('#champ-type-intervention').attr("value","incident");
                 //mettre les bons champs
+                $('#div-champs-intervention-specifiques').html('Type dincident : <input type="text" id="champ-type-animal" name="type-animal" placeholder="Type dincident" /><br>');
+                
+                
+                
             }).fail(function () {
                 $('#nom-client').html("pas trouvé");
             });
@@ -182,15 +190,21 @@ and open the template in the editor.
         function interventionLivraison() {
             $.ajax({
             }).done(function () {
-                $('#bouton-intervention-livraison').attr("style","background-color:blue");
+                //set le bouton précédent à la couleur normale
+                var currentButton = $('#champ-type-intervention').val();
+                $('#bouton-intervention-'+currentButton+'').attr("style","background-color:white");
+                //changer couleur bouton
+                $('#bouton-intervention-livraison').attr("style","color:white;background-color:blue");
+                //changer valeur action
+                $('#champ-type-intervention').attr("value","livraison");
+                //mettre les bons champs
                 $('#div-champs-intervention-specifiques').html(
                         'Prestataire : <input type="text" id="champ-prestataire" name="prestataire" placeholder="prestataire" /><br>'
                         +'Objet : <input type="text" id="champ-objet" name="objet" placeholder="objet" /><br>'
                         );
-                $('#champ-type-intervention').attr("value","livraison");
-                //changer couleur bouton
-                ////changer val
-                //mettre les bons champs
+                
+                
+                
             }).fail(function () {
                 $('#nom-client').html("pas trouvé");
             });
