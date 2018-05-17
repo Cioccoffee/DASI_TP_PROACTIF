@@ -7,6 +7,10 @@ and open the template in the editor.
 <html>
     <head>
         <style>
+            .bouton-deconnexion{
+                text-align: right;
+                float: right;
+            }
             html,body{
                 height: 100%;
             }
@@ -63,12 +67,21 @@ and open the template in the editor.
             .table{
                 margin: 40px;
             }
+            .employe{
+                float: right;
+            }
         </style>
         <title>MenuEmploye</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"> </script>
     </head>
     <body>
+        <a href="Accueil.html"><img src="Proact'IF.png"></a>
+        <div class="bouton-deconnexion"><input type="button" 
+                    id="bouton-deconnexion" value="Deconnexion" 
+                    onclick="window.location.href='Accueil.html';"/></div>
+        <label class="employe" for="bouton-deconnexion" id="Employe"></label>
         <div class="container">
             <div class="item">
                 <h1 align="center">Interventions du jour</h1>
@@ -100,18 +113,161 @@ and open the template in the editor.
                 <h2 align="center">Validation d'intervention</h2>
                 <nav>
                     <ul>
-                        <li>Heure de fin: <input class="time" type="text" id="heure" 
-                                name="here">:<input class="time" type="text" id="minute" 
-                                name="minute"></li>
+                        <li>Heure de fin: <input class="time" type="text" 
+                                id="heure" name="here">:<input class="time" 
+                                type="text" id="minute" name="minute"></li>
                         <li>Commentaire:</li> 
                         <li><textarea class="commentaire" id="commentaire" 
-                                    name="commentaire"></textarea></li>
-                        <li class="liButton"><button class="button" id="bouton-valider">
-                                Valider</button>
+                                    name="commentaire" 
+                                    placeholder="Commentaire (optionnel)"
+                                    ></textarea></li>
+                        <li class="liButton"><button class="button" 
+                                    id="bouton-valider">Valider</button>
+                                    <div id="message"></div>
                         </li>
                     </ul>
                 </nav>
             </div>
-        </div>    
+        </div>
+        
+        <script>
+            
+            function getAdresse() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getAdresse'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de l\'adresse');
+                });
+            }
+            
+            function getDemande() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getDemande'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de la demande');
+                });
+            }
+            
+            function getClient() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getClient'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération du client');
+                });
+            }
+            
+            function getType() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getType'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération du type');
+                });
+            }
+            
+            function getAnimal() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getAnimal'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de l\'animal');
+                });
+            }
+            
+            function getDescription() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getDescription'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de la description');
+                });
+            }
+
+            function validerIntervention() {
+                $('#message').html("Validation en cours...");
+                var heure = $('#heure').val();
+                var minute = $('#minute').val();
+                var commentaire = $('#commentaire').val();
+                var employe = $('#employe').val();
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'ValiderIntervention',
+                        champHeure: heure,
+                        champMinute: minute,
+                        champCommentaire: commentaire,
+                        champEmploye: employe
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    $('#message').html('Validation effectuée');
+                    console.log('Validation effectuée');
+                    
+                }).fail(function () {
+                    $('#message').html('Validation non effectuée');
+                    console.log('Validation non effectuée');
+                });
+            }
+            
+            $(document).ready(function () {
+                getAdresse();
+                getDemande();
+                getClient();
+                getType();
+                getAnimal();
+                getDescription();
+                $('#bouton-valider').on('click', function () {
+                    console.log('Click sur le bouton "Valider"');
+                    validerIntervention();
+                });
+            });
+        </script>
     </body>
 </html>
