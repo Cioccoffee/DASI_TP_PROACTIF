@@ -9,12 +9,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import static com.mycompany.dasi_tp_proactif.ActionServlet.connectedClient;
-import static com.mycompany.dasi_tp_proactif.ActionServlet.connectedEmploye;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import modele.Animal;
+import modele.Client;
 import modele.Employe;
 import modele.Intervention;
 import modele.Livraison;
@@ -38,12 +38,13 @@ public class Serializer {
     
     //Menu Employe
     
-    public static void printAnswerNomEmploye(PrintWriter out){
+    public static void printAnswerNomEmploye(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-        if(connectedClient != null){
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
             jo.addProperty("nom",connectedEmploye.getNom());
             jo.addProperty("prenom",connectedEmploye.getPrenom());
         }else{
@@ -52,7 +53,7 @@ public class Serializer {
         }
         
         JsonObject container = new JsonObject();
-        container.add("client",jo);
+        container.add("employe",jo);
         
         out.println(gson.toJson(container));
     }
@@ -62,11 +63,11 @@ public class Serializer {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-        if(connectedClient != null){
-            //jo.addProperty("adresse",.getAdresse());
-        }else{
+//        if(connectedClient != null){
+//            //jo.addProperty("adresse",.getAdresse());
+//        }else{
             jo.addProperty("adresse","adresse");
-        }
+        //}
         out.println(gson.toJson(jo));
     }
     
@@ -75,11 +76,11 @@ public class Serializer {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-        if(connectedClient != null){
-            //jo.addProperty("demande",.getDemande());
-        }else{
-            jo.addProperty("demande","demande");
-        }
+//        if(connectedClient != null){
+//            //jo.addProperty("adresse",.getAdresse());
+//        }else{
+            jo.addProperty("adresse","adresse");
+        //}
         out.println(gson.toJson(jo));
     }
     
@@ -88,11 +89,11 @@ public class Serializer {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-        if(connectedClient != null){
-            //jo.addProperty("client",.getClient());
-        }else{
-            jo.addProperty("client","client");
-        }
+//        if(connectedClient != null){
+//            //jo.addProperty("adresse",.getAdresse());
+//        }else{
+            jo.addProperty("adresse","adresse");
+        //}
         out.println(gson.toJson(jo));
     }
     
@@ -101,11 +102,11 @@ public class Serializer {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-        if(connectedClient != null){
-            //jo.addProperty("type",.getType());
-        }else{
-            jo.addProperty("type","type");
-        }
+//        if(connectedClient != null){
+//            //jo.addProperty("adresse",.getAdresse());
+//        }else{
+            jo.addProperty("adresse","adresse");
+        //}
         out.println(gson.toJson(jo));
     }
     
@@ -114,11 +115,11 @@ public class Serializer {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-        if(connectedClient != null){
-            //jo.addProperty("animal",.getAnimal());
-        }else{
-            jo.addProperty("animal","animal");
-        }
+//        if(connectedClient != null){
+//            //jo.addProperty("adresse",.getAdresse());
+//        }else{
+            jo.addProperty("adresse","adresse");
+        //}
         out.println(gson.toJson(jo));
     }
     
@@ -127,11 +128,11 @@ public class Serializer {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-        if(connectedClient != null){
-            //jo.addProperty("description",.getDescription());
-        }else{
-            jo.addProperty("description","description");
-        }
+//        if(connectedClient != null){
+//            //jo.addProperty("adresse",.getAdresse());
+//        }else{
+            jo.addProperty("adresse","adresse");
+        //}
         out.println(gson.toJson(jo));
     }
     
@@ -164,11 +165,12 @@ public class Serializer {
     
     //MenuClient
     
-    public static void printAnswerNomClient(PrintWriter out){
+    public static void printAnswerNomClient(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
+        Client connectedClient = (Client)session.getAttribute("client");
         if(connectedClient != null){
             jo.addProperty("nom",connectedClient.getNom());
             jo.addProperty("prenom",connectedClient.getPrenom());
@@ -217,6 +219,7 @@ public class Serializer {
         out.println(gson.toJson(container));
     }
     
+    //dit si l'intervention a bien été attribuée
     public static void printAnswerIntervention(PrintWriter out, Employe e){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

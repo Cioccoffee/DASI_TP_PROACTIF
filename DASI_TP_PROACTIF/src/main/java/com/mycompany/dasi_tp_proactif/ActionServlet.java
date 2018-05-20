@@ -33,6 +33,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import modele.Animal;
 import modele.Client;
@@ -61,9 +62,6 @@ public class ActionServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    //attributs qui doivent être gérés à l'échelle de l'application
-    static Client connectedClient;
-    static Employe connectedEmploye;
     
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -82,17 +80,20 @@ public class ActionServlet extends HttpServlet {
 //            out.println("</html>");
 //        }
 
+        //permet de gérer les attributs qui existent à l'échelle de l'application
+        HttpSession session = request.getSession(true);
+        
         String action = request.getParameter("action");
         switch(action){
             case "connecterClient" :
                 
                 try{
-                    connectedClient = ActionConnecterClient.execute(request);
-                    
+                    Client c = ActionConnecterClient.execute(request);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     PrintWriter out = response.getWriter();
-                    if(connectedClient != null){
+                    if(c != null){
+                        session.setAttribute("client", c);
                         Serializer.printAnswerConnexion(out);
                     }
                     out.close();
@@ -105,13 +106,12 @@ public class ActionServlet extends HttpServlet {
                 
             case "connecterEmploye":
                 try{
-                    
-                    connectedEmploye = ActionConnecterEmploye.execute(request);
-                    
+                    Employe e = ActionConnecterEmploye.execute(request);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     PrintWriter out = response.getWriter();
-                    if(connectedEmploye != null){
+                    if(e != null){
+                        session.setAttribute("employe", e);
                         Serializer.printAnswerConnexion(out);
                     }
                     out.close();
@@ -121,7 +121,7 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "deconnecterClient":
-                connectedClient = null;
+                session.setAttribute("client", null);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter out = response.getWriter();
@@ -130,7 +130,7 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "deconnecterEmploye":
-                connectedClient = null;
+                session.setAttribute("employe", null);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
@@ -142,12 +142,12 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                Serializer.printAnswerNomClient(out);
+                Serializer.printAnswerNomClient(out, session);
                 out.close();
                 break;
                 
             case "getHistoriqueClient":
-                List<Intervention> li = connectedClient.getInterventionsDemandees();
+                List<Intervention> li = ((Client)session.getAttribute("client")).getInterventionsDemandees();
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
@@ -157,7 +157,7 @@ public class ActionServlet extends HttpServlet {
                 
             // ces actions retournent un employé
             case "demanderInterventionAnimal":
-                Employe e = ActionInterventionAnimal.execute(request,connectedClient);
+                Employe e = ActionInterventionAnimal.execute(request,(Client)session.getAttribute("client"));
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
@@ -166,7 +166,7 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "demanderInterventionLivraison":
-                e = ActionInterventionLivraison.execute(request,connectedClient);
+                e = ActionInterventionLivraison.execute(request,(Client)session.getAttribute("client"));
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
@@ -175,7 +175,7 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "demanderInterventionIncident":
-                e = ActionInterventionIncident.execute(request,connectedClient);
+                e = ActionInterventionIncident.execute(request,(Client)session.getAttribute("client"));
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
@@ -196,7 +196,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                Serializer.printAnswerNomEmploye(out);
+                Serializer.printAnswerNomEmploye(out,session);
                 out.close();
                 break;
                 
