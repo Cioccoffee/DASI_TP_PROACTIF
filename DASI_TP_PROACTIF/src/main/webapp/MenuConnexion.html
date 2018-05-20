@@ -6,13 +6,23 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     </head>
     <body>
-        <h1>Formulaire de login</h1>
-        Identifiant : <input type="text" id="champ-login" name="login" placeholder="votre identifiant" /><br>
-        Mot de passe : <input type="password" id="champ-password" name="password" /><br>
-        <label for="bouton-connexion-client">Connexion client</label>
-        <button id="bouton-connexion-client">Connexion</button>
-        <label for="bouton-connexion-employe">Connexion employé</label>
-        <button id="bouton-connexion-employe">Connexion</button>
+        <div id='formulaire-connexion'>
+            <h1>Connexion</h1>
+            E-mail
+            <input type="text" id="champ-login" name="login" placeholder="votre identifiant" /><br>
+            Mot de passe
+            <input type="password" id="champ-password" name="password" /><br>
+        </div>
+        
+        <div id='connexion-client'>
+            <label for="bouton-connexion-client">Connexion client</label>
+            <button id="bouton-connexion-client">Connexion</button>
+        </div>
+        <div id='connexion-employe'>
+            <label for="bouton-connexion-employe">Connexion employé</label>
+            <button id="bouton-connexion-employe">Connexion</button>
+        </div>
+        
         <div id="message"></div>
         
         <script>
