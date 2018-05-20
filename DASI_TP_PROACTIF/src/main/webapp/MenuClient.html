@@ -95,6 +95,7 @@ and open the template in the editor.
                 //date + type => transformer date
                 //details
                 var historiqueHtml = $("#historique");
+                historiqueHtml.empty();
                 $.each(historique, function (i, historique) {
                     historiqueHtml.append('<li>'
                             + historique.debut + " - "
@@ -169,7 +170,8 @@ and open the template in the editor.
                     $('#champ-description-intervention').empty();
                     
                     //afficher message confirmation
-                    alert("L'intervention a bien été attribuée à un de nos employés")
+                    alert("L'intervention a bien été attribuée à un de nos employés");
+                    historique();
                 }else if(success ==="false"){
                     alert("L'intervention n'a pas pu être attribuée à un de nos"
                     +"employés. Veuillez réessayer dans queques instants")
@@ -205,7 +207,8 @@ and open the template in the editor.
                     $('#champ-description-intervention').attr("value","");
                     
                     //afficher message confirmation
-                    alert("L'intervention a bien été attribuée à un de nos employés")
+                    alert("L'intervention a bien été attribuée à un de nos employés");
+                    historique();
                 }else if(success ==="false"){
                     alert("L'intervention n'a pas pu être attribuée à un de nos"
                     +"employés. Veuillez réessayer dans queques instants")
@@ -237,7 +240,8 @@ and open the template in the editor.
                     $('#champ-description-intervention').attr("value","");
                     
                     //afficher message confirmation
-                    alert("L'intervention a bien été attribuée à un de nos employés")
+                    alert("L'intervention a bien été attribuée à un de nos employés");
+                    historique();
                 }else if(success ==="false"){
                     alert("L'intervention n'a pas pu être attribuée à un de nos"
                     +"employés. Veuillez réessayer dans queques instants")
