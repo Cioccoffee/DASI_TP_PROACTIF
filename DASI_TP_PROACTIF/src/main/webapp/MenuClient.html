@@ -10,6 +10,9 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
         <h1>Proact'IF</h1>
@@ -19,16 +22,8 @@ and open the template in the editor.
         <button id="bouton-menu-client">Menu</button>
         <h2>Historique des interventions demandées</h2>
         <!ld>
-    <div id="div-historique" style="overflow:auto; height:100px; width:400px;">
-        liste <br>
-        liste <br>
-        liste <br>
-        liste <br>
-        liste <br>
-        liste <br>
-
-    </div>
-    <ul id="historique">
+    
+    <ul id="historique" class="list-group" style="overflow:auto; height:400px; width:400px;">
 
     </ul>
 
@@ -97,9 +92,28 @@ and open the template in the editor.
                 var historiqueHtml = $("#historique");
                 historiqueHtml.empty();
                 $.each(historique, function (i, historique) {
-                    historiqueHtml.append('<li>'
+                    historiqueHtml.append(
+                            '<div>'
+                            //+'<li class="list-group-item"> '
+                            +'<a class="list-group-item list-group-item-action"'
+                            + 'data-toggle="collapse"'
+                            +' href="#collapseData"'+historique.debut+'"'
+                            +' aria-expanded="false"'
+                            +' aria-controls="collapseData'+historique.debut
+                            +'">'
+                
+                            
                             + historique.debut + " - "
-                            + historique.type + '</li>');
+                            + historique.type 
+                            +'</a>'
+                            //+ '</li>'
+                            +'</div>'
+                            +'<div class="collapse" id="collapseData'+historique.debut+'">'
+                            +'<div class="card card-body">'
+                            +"Commentaire : "+historique.description
+                            +'</div>'
+                            +'</div>'
+                            );
                 }
                 );
                 // si connexion ok, aller sur la page suivante :
