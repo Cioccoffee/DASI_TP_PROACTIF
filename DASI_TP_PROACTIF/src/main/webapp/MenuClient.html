@@ -46,7 +46,7 @@ and open the template in the editor.
             </div>
             Description : <input type="text" id="champ-description-intervention" name="description" placeholder="Description" /><br>
         </div>
-        <button id="bouton-intervention-valider" style="color:white;background-color:blue">Valider</button>
+        <button id="bouton-intervention-valider" style="color:white;background-color:blue" onclick="demanderIntervention()">Valider</button>
     </div>
 
     <div>TODO write content</div>
@@ -135,13 +135,19 @@ and open the template in the editor.
             var intervention = $('#champ-type-intervention').val();
             switch(intervention){
                 case "animal":
-                    
+                    alert("trying");
+                    demanderInterventionAnimal();
+                    alert("apparently done");
                     break;
                 case "livraison":
-                    
+                    alert("trying");
+                    demanderInterventionLivraison();
+                    alert("apparently done");
                     break;
                 case "incident":
-                    
+                    alert("trying");
+                    demanderInterventionIncident();
+                    alert("apparently done");
                     break;
                 
             }
@@ -161,8 +167,22 @@ and open the template in the editor.
             }).done(function (data) {
                 //Ajouter nouvelle ligne dans l'historique si intervention
                 //bien attribuée
-                //vider les champs
+                
+                var success = data.res.success;
+                if(success === "true"){
+                    //vider les champs = change technique
+                    $('#champ-type-animal').empty();
+                    $('#champ-description-intervention').empty();
+                    
+                    //afficher message confirmation
+                    alert("L'intervention a bien été attribuée à un de nos employés")
+                }else if(success ==="false"){
+                    alert("L'intervention n'a pas pu être attribuée à un de nos"
+                    +"employés. Veuillez réessayer dans queques instants")
+                }
+                
             }).fail(function () {
+                alert("Houston, we got a problem")
             });
         
         }
@@ -182,6 +202,9 @@ and open the template in the editor.
                 //Ajouter nouvelle ligne dans l'historique si intervention
                 //bien attribuée
                 //vider les champs
+                $('#champ-prestataire').attr("value","");
+                $('#champ-objet').attr("value","");
+                $('#champ-description-intervention').attr("value","");
             }).fail(function () {
             });
         
@@ -193,7 +216,7 @@ and open the template in the editor.
                 method: 'POST',
                 data: {
                     action: 'demanderInterventionIncident',
-                    animal: $('#champ-type-incident').val(),
+                    //animal: $('#champ-type-incident').val(),
                     description: $('#champ-description-intervention').val()
                 },
                 dataType: 'json'
@@ -201,6 +224,8 @@ and open the template in the editor.
                 //Ajouter nouvelle ligne dans l'historique si intervention
                 //bien attribuée
                 //vider les champs
+                $('#champ-type-incident').attr("value","");
+                $('#champ-description-intervention').attr("value","");
             }).fail(function () {
                 
             });
@@ -259,9 +284,9 @@ and open the template in the editor.
                 $('#bouton-intervention-incident').attr("style","color:white;background-color:blue");
                 //changer valeur action
                 $('#champ-type-intervention').attr("value","incident");
-                //mettre les bons champs
-                $('#div-champs-intervention-specifiques').html('Type d\'incident : <input type="text" id="champ-type-incident" name="type-animal" placeholder="Type d\'incident" /><br>');
-                
+                //mettre les bons champs = aucun
+                //$('#div-champs-intervention-specifiques').html('Type d\'incident : <input type="text" id="champ-type-incident" name="type-animal" placeholder="Type d\'incident" /><br>');
+                $('#div-champs-intervention-specifiques').html("");
                 
                 
             }).fail(function () {

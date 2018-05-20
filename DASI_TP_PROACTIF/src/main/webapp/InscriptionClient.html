@@ -14,6 +14,11 @@ and open the template in the editor.
             html,body{
                 height: 100%;
             }
+            .header{
+                margin-top: 20px;
+                margin-right: 20px;
+                margin-left: 20px;
+            }
             #container{
                 height: 100%;
                 width: 100%;
@@ -21,19 +26,24 @@ and open the template in the editor.
                 margin: 0 auto;
             }
             .item{
+                margin-top: 70px;
+                text-align: center;
                 display: inline-block;
                 vertical-align: top;
-                background: #00BF1D;
                 height: 100%;
                 width: 33%;
             }
             .item:nth-child(2){
                 width: 33%;
-                background: #F4CAAE;
             }
             .item:nth-child(3){
                 width: 33%;
-                background: blue;
+            }
+            .table{
+                text-align: left;
+            }
+            .nonTable{
+                text-align: center;
             }
         </style>
         <title>InscriptionClient</title>
@@ -42,9 +52,11 @@ and open the template in the editor.
         <script src="https://code.jquery.com/jquery-1.12.1.min.js"> </script>
     </head>
     <body>
+        <div class="header">
         <a href="Accueil.html"><img src="Proact'IF.png"></a>
         <div class="bouton-connexion"><input type="button" value="Connexion" 
                     onclick="window.location.href='MenuConnexion.html';"/></div>
+        </div>
         <div class="container">
             <div class="item">
                 <h1>1.Identite</h1>
@@ -52,14 +64,23 @@ and open the template in the editor.
                 <br>
                 Prenom <br> <input type="text" id="prenom" name="prenom" placeholder="prenom"/>
                 <br>
-                Civilite Date de naissance
-                <br>
-                <select id="civilite">
-                    <option>Mr</option>
-                    <option>Mme</option>
-                </select>
-                <input id="date" type="date" />
-                <br>
+                <table style="margin-left: 105px">
+                    <tr>
+                        <td>Civilite</td> 
+                        <td>Date de naissance</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="civilite">
+                            <option>Mr</option>
+                            <option>Mme</option>
+                            </select>
+                        </td>
+                        <td>        
+                            <input id="date" type="date" />
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="item">
                 <h1>2.Coordonnees</h1>
@@ -79,7 +100,7 @@ and open the template in the editor.
             </div>
             <div class="item">
                 <h1>3.Compte</h1>
-                <table>
+                <table class="table">
                     <tr>
                         <td>E-mail :</td> 
                         <td><input type="text" id="email" name="email" 
@@ -92,7 +113,7 @@ and open the template in the editor.
                     </tr>
                     <tr>
                         <td></td>
-                        <td><button id="bouton-inscription-client">Créer mon 
+                        <td class="nonTable"><button id="bouton-inscription-client">Créer mon 
                                 compte</button>
                             <div id="message"></div>
                         </td>
