@@ -6,49 +6,123 @@ and open the template in the editor.
 -->
 <html>
     <head>
+        <style>
+            .bouton-connexion{
+                text-align: right;
+                float: right;
+            }
+            html,body{
+                height: 100%;
+            }
+            .header{
+                margin-top: 20px;
+                margin-right: 20px;
+                margin-left: 20px;
+            }
+            #container{
+                height: 100%;
+                width: 100%;
+                font-size: 0;
+                margin: 0 auto;
+            }
+            .item{
+                margin-top: 70px;
+                text-align: center;
+                display: inline-block;
+                vertical-align: top;
+                height: 100%;
+                width: 33%;
+            }
+            .item:nth-child(2){
+                width: 33%;
+            }
+            .item:nth-child(3){
+                width: 33%;
+            }
+            .table{
+                text-align: left;
+            }
+            .nonTable{
+                text-align: center;
+            }
+        </style>
         <title>InscriptionClient</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <script src="https://code.jquery.com/jquery-1.12.1.min.js"> </script>
     </head>
     <body>
+        <div class="header">
         <a href="Accueil.html"><img src="Proact'IF.png"></a>
-        <input type="button" value="Connexion" onclick="window.location.href='MenuConnexion.html';"/>
-        <h1>1.Identite</h1>
-        Nom <br> <input type="text" id="nom" name="nom" placeholder="nom" />
-        <br>
-        Prenom <br> <input type="text" id="prenom" name="prenom" placeholder="prenom"/>
-        <br>
-        Civilite Date de naissance
-        <br>
-        <select id="civilite">
-            <option>Mr</option>
-            <option>Mme</option>
-        </select>
-        <input id="date" type="date" />
-        <br>
-        <h1>2.Coordonnees</h1>
-        Pays <br> <input type="text" id="pays" name="pays" placeholder="pays" />
-        <br>
-        Rue <br> <input type="text" id="rue" name="rue" placeholder="rue"/>
-        <br>
-        Ville <br> <input type="text" id="ville" name="ville" 
-                          placeholder="ville" />
-        <br>
-        Code Postal <br> <input type="text" id="codePostal" name="codePostal" 
-                                placeholder="Code Postal"/>
-        <br>
-        Telephone <br> <input type="text" id="telephone" name="telephone" 
-                              placeholder="Telephone" />
-        <br>
-        <h1>3.Compte</h1>
-        E-mail : <input type="text" id="email" name="email" 
-                        placeholder="E-mail" /><br>
-        Mot de passe : <input type="password" id="password" name="password"
-                        placeholder="mot de passe"/><br>
-        <button id="bouton-inscription-client">Créer mon compte</button>
-        <div id="message"></div>
-        
+        <div class="bouton-connexion"><input type="button" value="Connexion" 
+                    onclick="window.location.href='MenuConnexion.html';"/></div>
+        </div>
+        <div class="container">
+            <div class="item">
+                <h1>1.Identite</h1>
+                Nom <br> <input type="text" id="nom" name="nom" placeholder="nom" />
+                <br>
+                Prenom <br> <input type="text" id="prenom" name="prenom" placeholder="prenom"/>
+                <br>
+                <table style="margin-left: 105px">
+                    <tr>
+                        <td>Civilite</td> 
+                        <td>Date de naissance</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="civilite">
+                            <option>Mr</option>
+                            <option>Mme</option>
+                            </select>
+                        </td>
+                        <td>        
+                            <input id="date" type="date" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="item">
+                <h1>2.Coordonnees</h1>
+                Pays <br> <input type="text" id="pays" name="pays" placeholder="pays" />
+                <br>
+                Rue <br> <input type="text" id="rue" name="rue" placeholder="rue"/>
+                <br>
+                Ville <br> <input type="text" id="ville" name="ville" 
+                                  placeholder="ville" />
+                <br>
+                Code Postal <br> <input type="text" id="codePostal" name="codePostal" 
+                                        placeholder="Code Postal"/>
+                <br>
+                Telephone <br> <input type="text" id="telephone" name="telephone" 
+                                      placeholder="Telephone" />
+                <br>
+            </div>
+            <div class="item">
+                <h1>3.Compte</h1>
+                <table class="table">
+                    <tr>
+                        <td>E-mail :</td> 
+                        <td><input type="text" id="email" name="email" 
+                                placeholder="E-mail" /></td>
+                    </tr>
+                    <tr>
+                        <td>Mot de passe :</td> 
+                        <td><input type="password" id="password" 
+                                name="password" placeholder="mot de passe"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="nonTable"><button id="bouton-inscription-client">Créer mon 
+                                compte</button>
+                            <div id="message"></div>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
         <script>
 
             function inscriptionClient() {

@@ -11,9 +11,12 @@ package com.mycompany.dasi_tp_proactif;
 
 import actions.ActionConnecterClient;
 import actions.ActionConnecterEmploye;
+import actions.ActionInscrireClient;
 import actions.ActionInterventionAnimal;
 import actions.ActionInterventionIncident;
 import actions.ActionInterventionLivraison;
+import actions.ActionValiderIntervention;
+import static com.mycompany.dasi_tp_proactif.Serializer.printAnswerInscription;
 import dao.JpaUtil;
 
 import java.io.IOException;
@@ -181,35 +184,68 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "inscrireClient":
-                System.out.println("Inscription: ");
-                String nom = request.getParameter("nom");
-                String prenom = request.getParameter("prenom");
-                String civilite = request.getParameter("civilite");
-                String date = request.getParameter("date");
-                System.out.println(date);
-                String pays = request.getParameter("pays");
-                String rue = request.getParameter("rue");
-                String ville = request.getParameter("ville");
-                String codePostal = request.getParameter("codePostal");
-                String telephone = request.getParameter("telephone");
-                String mail = request.getParameter("mail");
-                String password = request.getParameter("password");
-
-                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                Date d = sf.parse(date);
-                String resDate = df.format(d);
-
-
-                Client newClient = new Client(nom, prenom, 
-                            civilite, resDate, telephone, codePostal,
-                            mail, password);
-
-                InscriptionClient(newClient);
+                ActionInscrireClient.execute(request);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
                 Serializer.printAnswerInscription(out);
+                out.close();
+                break;
+                
+            case "getEmploye":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerNomEmploye(out);
+                out.close();
+                break;
+                
+            case "getAdresse":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerAdresse(out);
+                out.close();
+                break;
+                
+            case "getDemande":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerDemande(out);
+                out.close();
+                break;
+                
+            case "getType":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerType(out);
+                out.close();
+                break;
+                
+            case "getAnimal":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerAnimal(out);
+                out.close();
+                break;
+                
+            case "getDescription":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerDescription(out);
+                out.close();
+                break;
+                
+            case "validerIntervention":
+                //boolean valider = ActionValiderIntervention.execute(request, e);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                //Serializer.printValiderIntervention(out, e);
                 out.close();
                 break;
                 

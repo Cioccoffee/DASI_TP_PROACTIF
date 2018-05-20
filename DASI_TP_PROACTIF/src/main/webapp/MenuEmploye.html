@@ -7,8 +7,19 @@ and open the template in the editor.
 <html>
     <head>
         <style>
+            .bouton-deconnexion{
+                text-align: right;
+                float: right;
+            }
             html,body{
                 height: 100%;
+                margin: 0; 
+                padding: 0; 
+            }
+            .header{
+                margin-top: 20px;
+                margin-right: 20px;
+                margin-left: 20px;
             }
             #container{
                 height: 100%;
@@ -17,16 +28,16 @@ and open the template in the editor.
                 margin: 0 auto;
             }
             .item{
+                margin-top: 20px;
+                text-align: center;
                 display: inline-block;
                 vertical-align: top;
-                background: #00BF1D;
                 height: 100%;
                 width: 60%;
             }
             .item:nth-child(2){
                 float: right;
                 width: 40%;
-                background: #F4CAAE;
             }
             .button{
                 background-color: blue;
@@ -62,13 +73,36 @@ and open the template in the editor.
             }
             .table{
                 margin: 40px;
+                text-align: left;
+                margin-bottom: 20px;
+            }
+            .employe{
+                float: right;
+            }
+            #map{ 
+                height: 70%;
+                margin-left: 60px;
+                margin-right: 600px;
+            }
+            .title{
+                margin-top:40px;
             }
         </style>
         <title>MenuEmploye</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"> </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAklw96N9rLd93ubr-F04CN7qi2ryKayAc&callback=initMap"></script>
     </head>
     <body>
+        <div class="header">
+        <a href="Accueil.html"><img src="Proact'IF.png"></a>
+        <div class="bouton-deconnexion"><input type="button" 
+                    id="bouton-deconnexion" value="Deconnexion" 
+                    onclick="window.location.href='Accueil.html';"/></div>
+        <label class="employe" for="bouton-deconnexion" id="nomEmploye"></label>
+        <label class="employe" for="bouton-deconnexion" id="prenomEmploye"></label>
+        </div>
         <div class="container">
             <div class="item">
                 <h1 align="center">Interventions du jour</h1>
@@ -97,21 +131,268 @@ and open the template in the editor.
                         <td><div id="description"></div></td>
                     </tr>
                 </table>
-                <h2 align="center">Validation d'intervention</h2>
-                <nav>
-                    <ul>
-                        <li>Heure de fin: <input class="time" type="text" id="heure" 
-                                name="here">:<input class="time" type="text" id="minute" 
-                                name="minute"></li>
-                        <li>Commentaire:</li> 
-                        <li><textarea class="commentaire" id="commentaire" 
-                                    name="commentaire"></textarea></li>
-                        <li class="liButton"><button class="button" id="bouton-valider">
-                                Valider</button>
-                        </li>
-                    </ul>
-                </nav>
+                <h2 class="title" align="center">Validation d'intervention</h2>
+                <table class="table">
+                    <tr>
+                        <td>Heure de fin:</td> 
+                        <td><input class="time" type="text" 
+                                id="heure" name="here">:<input class="time" 
+                                type="text" id="minute" name="minute"></td>
+                    </tr>
+                    <tr>
+                        <td>Commentaire:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><textarea class="commentaire" 
+                                    id="commentaire" name="commentaire" 
+                                    placeholder="Commentaire (optionnel)"
+                                    ></textarea></td>
+                    </tr>
+                </table>
+                <div class="liButton"><button class="button" 
+                                    id="bouton-valider">Valider</button>
+                                    <div id="message"></div>
+                </div>
             </div>
-        </div>    
+        </div>
+        
+        <div id="map"></div>
+        
+        <script>
+            
+            var googleMapInstance = null;
+            
+            function getEmploye() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getClient'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    var employe = data.employe;
+                    $('#nomEmploye').html(employe.nom);
+                    $('#prenomEmploye').html(employe.prenom);
+                }).fail(function () {
+                    $('#nomEmploye').html('Echec de la récupération du client');
+                });
+            }
+            
+            function getAdresse() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getAdresse'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    $('#adresse').html('data.adresse');
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de l\'adresse');
+                });
+            }
+            
+            function getDemande() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getDemande'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de la demande');
+                });
+            }
+            
+            function getType() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getType'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération du type');
+                });
+            }
+            
+            function getAnimal() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getAnimal'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de l\'animal');
+                });
+            }
+            
+            function getDescription() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'getDescription'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+
+                }).fail(function () {
+                    $('#message').html('Echec de la récupération de la description');
+                });
+            }
+
+            function validerIntervention() {
+                $('#message').html("Validation en cours...");
+                var heure = $('#heure').val();
+                var minute = $('#minute').val();
+                var commentaire = $('#commentaire').val();
+                var employe = $('#employe').val();
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET',
+                    data: {
+                        action: 'ValiderIntervention',
+                        champHeure: heure,
+                        champMinute: minute,
+                        champCommentaire: commentaire,
+                        champEmploye: employe
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    if(data.Intervention==true){
+                        $('#message').html('Validation effectuée');
+                        console.log('Validation effectuée');
+                    }
+                    else{
+                        $('#message').html('Erreur lors de la validation');
+                        console.log('Erreur lors de la validation');
+                    }
+                    
+                }).fail(function () {
+                    $('#message').html('Validation non effectuée');
+                    console.log('Validation non effectuée');
+                });
+            }
+
+            function makeInfoWindow(title) {
+                return new google.maps.InfoWindow({
+                    content: '<div>Information: ' + title + '</div>'
+                });
+            }
+
+            function attachInfoWindow(marker, infowindow, htmlDescription) {
+                marker.addListener('click', function () {
+
+                    infowindow.setContent(htmlDescription);
+                    infowindow.open(googleMapInstance, this);
+                });
+            }
+
+            function initMap() {
+
+                googleMapInstance = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 45.7601424, lng: 4.8961779},
+                    zoom: 13
+                });
+
+                var infowindow = makeInfoWindow('');
+
+                var marker = new google.maps.Marker({
+                    map: googleMapInstance,
+                    position: {lat: 45.782122, lng: 4.872735},
+                    title: "Département IF, INSA de Lyon",
+                    icon: {url: './image/bird.png', scaledSize: new google.maps.Size(32, 32)}
+                });
+
+                marker.addListener('click', function () {
+
+                    infowindow.setContent('<div>Information: ' + marker.title + '</div>');
+                    infowindow.open(googleMapInstance, marker);
+                });
+
+                var marker2 = new google.maps.Marker({
+                    map: googleMapInstance,
+                    position: {lat: 45.782592, lng: 4.878238},
+                    title: "Entrée principale, INSA de Lyon",
+                    icon: {url: './image/snake.png', scaledSize: new google.maps.Size(32, 32)}
+                });
+
+                marker2.addListener('click', function () {
+
+                    infowindow.setContent('<div>Information: ' + marker2.title + '</div>');
+                    infowindow.open(googleMapInstance, marker2);
+                });
+
+                // Simuler un appel AJAX (attente 5s)
+                setTimeout(
+                        generateMarkers,
+                        5000
+                        );
+            }
+
+            function generateMarkers() {
+
+                // Petite popup Google Maps
+                var infowindow = makeInfoWindow('');
+
+                var position = {lat: 45.782122, lng: 4.872735};
+
+                for (var i = 0; i < 100; i++) {
+
+                    var iconImage = null; // marker par défaut
+                    if (i % 2 === 0) {
+                        // image pour marker personnalisé
+                        iconImage = {url: './image/UnderConstruction.png', scaledSize: new google.maps.Size(32, 32)}
+                    }
+
+                    var marker = new google.maps.Marker({
+                        map: googleMapInstance,
+                        position: {lat: position.lat + (Math.random() - 0.5) / 10.0, lng: position.lng + 2 * (Math.random() - 0.5) / 10.0},
+                        title: 'Endroit #' + i,
+                        icon: iconImage
+                    });
+
+                    attachInfoWindow(
+                            marker, infowindow,
+                            '<div><strong><a href="./endroit.html?' + i + '">Endroit #' + i + '</a></strong><br/>Ceci est l\'endroit charmant numéro ' + i + '<br/>' + 'Incroyable !' + '</div>'
+                            );
+                }
+
+            }
+            
+            $(document).ready(function () {
+                getAdresse();
+                getDemande();
+                getClient();
+                getType();
+                getAnimal();
+                getDescription();
+                $('#bouton-valider').on('click', function () {
+                    console.log('Click sur le bouton "Valider"');
+                    validerIntervention();
+                });
+            });
+        </script>
     </body>
 </html>

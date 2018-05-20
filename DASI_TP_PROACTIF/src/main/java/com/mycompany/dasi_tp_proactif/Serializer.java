@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import static com.mycompany.dasi_tp_proactif.ActionServlet.connectedClient;
+import static com.mycompany.dasi_tp_proactif.ActionServlet.connectedEmploye;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -30,11 +31,122 @@ public class Serializer {
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        jo.addProperty("Reussie","");
-        
         JsonObject container = new JsonObject();
         container.add("inscription: ",jo);
         out.println(gson.toJson(container));
+    }
+    
+    //Menu Employe
+    
+    public static void printAnswerNomEmploye(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            jo.addProperty("nom",connectedEmploye.getNom());
+            jo.addProperty("prenom",connectedEmploye.getPrenom());
+        }else{
+            jo.addProperty("nom","nom");
+            jo.addProperty("prenom","prenom");
+        }
+        
+        JsonObject container = new JsonObject();
+        container.add("client",jo);
+        
+        out.println(gson.toJson(container));
+    }
+    
+    public static void printAnswerAdresse(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            //jo.addProperty("adresse",.getAdresse());
+        }else{
+            jo.addProperty("adresse","adresse");
+        }
+        out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerDemande(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            //jo.addProperty("demande",.getDemande());
+        }else{
+            jo.addProperty("demande","demande");
+        }
+        out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerClient(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            //jo.addProperty("client",.getClient());
+        }else{
+            jo.addProperty("client","client");
+        }
+        out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerType(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            //jo.addProperty("type",.getType());
+        }else{
+            jo.addProperty("type","type");
+        }
+        out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerAnimal(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            //jo.addProperty("animal",.getAnimal());
+        }else{
+            jo.addProperty("animal","animal");
+        }
+        out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerDescription(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(connectedClient != null){
+            //jo.addProperty("description",.getDescription());
+        }else{
+            jo.addProperty("description","description");
+        }
+        out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerValiderIntervention(PrintWriter out, 
+            boolean valider){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        if(valider == true){
+            jo.addProperty("Intervention","Validée");
+        }else{
+            jo.addProperty("Intervention","Non validée");
+        }
+        out.println(gson.toJson(jo));
     }
     
     //Connexion - Déconnexion
@@ -119,5 +231,6 @@ public class Serializer {
         container.add("res",jo);
         out.println(gson.toJson(container));
     }
+    
     
 }
