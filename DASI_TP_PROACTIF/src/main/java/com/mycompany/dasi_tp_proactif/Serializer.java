@@ -11,6 +11,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import modele.Animal;
@@ -186,10 +188,10 @@ public class Serializer {
     }
     
     public static void printAnswerHistorique(PrintWriter out, List<Intervention> li){
-        
+        List<Intervention> liTriee = triInterventions(li);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonArray ja = new JsonArray();
-        for(Intervention i : li){
+        for(Intervention i : liTriee){
             JsonObject jo = new JsonObject();
             //JsonObject debut = new JsonObject();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh'h'mm");
@@ -235,5 +237,21 @@ public class Serializer {
         out.println(gson.toJson(container));
     }
     
-    
+    public static List<Intervention> triInterventions(List<Intervention> li){
+        List<Intervention> liTriee = new LinkedList<Intervention>();
+        while(!li.isEmpty()){
+            long max = li.get(0).getDateDeDebut().getTime();
+            //car insertion en queue d'après mes tests
+            int index = 0;
+            for(int i = 1; i < li.size(); i++){
+                if(max < li.get(i).getDateDeDebut().getTime()){
+                    max = li.get(i).getDateDeDebut().getTime();
+                    index = i;
+                }
+            }
+            liTriee.add(li.get(index));
+            li.remove(index);
+        }
+        return liTriee;
+    }
 }
