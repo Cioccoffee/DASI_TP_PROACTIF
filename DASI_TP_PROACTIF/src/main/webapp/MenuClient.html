@@ -23,9 +23,9 @@ and open the template in the editor.
         <h2>Historique des interventions demandées</h2>
         <!ld>
     
-    <ul id="historique" class="list-group" style="overflow:auto; height:400px; width:400px;">
+    <div id="historique" style="overflow:auto; height:400px; width:400px;">
 
-    </ul>
+    </div>
 
     <div id="div-intervention">
         <h2>Demande d'intervention</h2>
@@ -93,24 +93,28 @@ and open the template in the editor.
                 historiqueHtml.empty();
                 $.each(historique, function (i, historique) {
                     historiqueHtml.append(
-                            '<div>'
-                            //+'<li class="list-group-item"> '
-                            +'<a class="list-group-item list-group-item-action"'
-                            + 'data-toggle="collapse"'
-                            +' href="#collapseData"'+historique.debut+'"'
-                            +' aria-expanded="false"'
-                            +' aria-controls="collapseData'+historique.debut
-                            +'">'
-                
                             
+                            '<div class="card">'
+                            +'<div class="card-header" id="heading'+i+'">'
+                            +'<h5 class="mb-0">'
+                            +'<button class="btn btn-link collapsed"'
+                            +' data-toggle="collapse"'
+                            +' data-target="#collapseData'+i+'"'
+                            +' aria-expanded="true"'
+                            +' aria-controls="collapseData'+i+'">'
                             + historique.debut + " - "
                             + historique.type 
-                            +'</a>'
-                            //+ '</li>'
+                            +'</button>'
+                            +'</h5>'
                             +'</div>'
-                            +'<div class="collapse" id="collapseData'+historique.debut+'">'
-                            +'<div class="card card-body">'
+                    
+                            +'<div class="collapse"'
+                            +' id="collapseData'+i+'"'
+                            +' aria-labelledby="heading'+i+'"'
+                            +' data-parent="#historique">'
+                            +'<div class="card-body">'
                             +"Commentaire : "+historique.description
+                            +'</div>'
                             +'</div>'
                             +'</div>'
                             );
