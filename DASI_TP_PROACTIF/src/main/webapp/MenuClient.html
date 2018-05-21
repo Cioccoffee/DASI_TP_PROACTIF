@@ -92,10 +92,7 @@ and open the template in the editor.
                 var historiqueHtml = $("#historique");
                 historiqueHtml.empty();
                 $.each(historique, function (i, historique) {
-                    alert(i)
-                    historiqueHtml.append(
-                            
-                            '<div class="card">'
+                    var item ='<div class="card">'
                             +'<div class="card-header" id="heading'+i+'">'
                             +'<h5 class="mb-0">'
                             +'<button class="btn btn-link collapsed"'
@@ -113,12 +110,27 @@ and open the template in the editor.
                             +' id="collapseData'+i+'"'
                             +' aria-labelledby="heading'+i+'"'
                             +' data-parent="#historique">'
-                            +'<div class="card-body">'
-                            +"Commentaire : "+historique.description
+                            +'<div class="card-body">';
+//                    historiqueHtml.append(
+//                            
+//                            );
+                if(historique.type==="Animal"){
+                    //historiqueHtml.append(
+                            item+="Type : "+historique.animal
+                                    //);
+                }else if(historique.type==="Livraison"){
+                    //historiqueHtml.append(
+                            item+="Prestataire : "+historique.prestataire
+                            +"Objet : "+historique.objet
+                            //);
+                }
+                //historiqueHtml.append(
+                            item+="Commentaire : "+historique.description
                             +'</div>'
                             +'</div>'
                             +'</div>'
-                            );
+                            //);
+                historiqueHtml.append(item);           
                 }
                 );
                 // si connexion ok, aller sur la page suivante :

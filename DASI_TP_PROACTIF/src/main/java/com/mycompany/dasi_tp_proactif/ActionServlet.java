@@ -153,7 +153,6 @@ public class ActionServlet extends HttpServlet {
                         ((Client)session.getAttribute("client")).getMdp());
                 List<Intervention> li = (cHisto.getInterventionsDemandees());
                 //List<Intervention> li = ((Client)session.getAttribute("client")).getInterventionsDemandees());
-                System.out.println(li.size());
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
