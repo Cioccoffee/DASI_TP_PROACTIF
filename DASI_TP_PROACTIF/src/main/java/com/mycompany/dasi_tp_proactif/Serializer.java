@@ -194,7 +194,7 @@ public class Serializer {
         for(Intervention i : liTriee){
             JsonObject jo = new JsonObject();
             //JsonObject debut = new JsonObject();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh'h'mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH'h'mm");
             String debutstr = sdf.format(i.getDateDeDebut());
             jo.addProperty("debut",debutstr);
             //nb of ms since jan 1st 1970, GMT

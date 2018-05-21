@@ -40,6 +40,7 @@ import modele.Client;
 import modele.Employe;
 import modele.Intervention;
 import modele.Livraison;
+import service.ServiceAppli;
 
 import static service.ServiceAppli.AuthentificationClient;
 import static service.ServiceAppli.AuthentificationEmploye;
@@ -147,7 +148,12 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "getHistoriqueClient":
-                List<Intervention> li = ((Client)session.getAttribute("client")).getInterventionsDemandees();
+                Client cHisto = ServiceAppli.AuthentificationClient(
+                        ((Client)session.getAttribute("client")).getAdresseElectronique(),
+                        ((Client)session.getAttribute("client")).getMdp());
+                List<Intervention> li = (cHisto.getInterventionsDemandees());
+                //List<Intervention> li = ((Client)session.getAttribute("client")).getInterventionsDemandees());
+                System.out.println(li.size());
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
