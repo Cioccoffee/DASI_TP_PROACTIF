@@ -10,37 +10,68 @@
 
     </head>
     <body>
-        <div id='formulaire-connexion'>
-            <h1>Connexion</h1>
-            E-mail <br>
-            <input type="text" id="champ-login" name="login" placeholder="Entrez votre e-mail" /><br>
-            Mot de passe <br>
-            <input type="password" id="champ-password" name="password" placeholder="Entrez votre mot de passe"/><br>
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-7">
+                    <img src ="./Proact'IF.png">
+
+                </div>
+
+                <div class="col-2">
+                    <input type="button" class="btn btn-outline-dark"
+                           style="color:white;background-color:blue"
+                           value="Inscription" onclick="window.location.href = 'InscriptionClient.html';"/>
+                </div>
+
+                <div class="col-2">
+                    <input type="button" class="btn btn-outline-dark" 
+                           value="Connexion" onclick="window.location.href = 'MenuConnexion.html';"/>
+                </div>
+                <div class="col-1">
+                    <img src ="./menuicon.png" style="height:40px; width:45px;">
+                </div>
+            </div>
+            <div class="row">
+                <div id='formulaire-connexion' class="col-sm">
+                    <h3>Connexion</h3>
+                    E-mail <br>
+                    <input type="text" id="champ-login" name="login" placeholder="Entrez votre e-mail" /><br>
+                    Mot de passe <br>
+                    <input type="password" id="champ-password" name="password" placeholder="Entrez votre mot de passe"/><br>
+                    <div id="message"></div>
+                     <br>
+                </div>
+            </div>
+            <div class="row">
+                <div id='connexion-client' class="col-sm">
+                    <!--label for="bouton-connexion-client">Connexion client</label-->
+                    <h5>Connexion client</h5>
+                    Accédez à votre espace client, réalisez une demande d'intervention, 
+                    consultez votre historique d'interventions. <br>  <br>
+                    <button id="bouton-connexion-client" type="button" 
+                            class="btn btn-outline-dark"
+                            style="color:white;background-color:blue">Connexion</button>
+                </div>
+                <div id='connexion-employe' class="col-sm">
+                    <!--label for="bouton-connexion-employe">Connexion employé</label-->
+                    <h5>Connexion employé </h5>
+                    Gérez vos interventions, consultez votre tableau de bord. <br> <br>
+                    <button id="bouton-connexion-employe"type="button" 
+                            class="btn btn-outline-dark"
+                            style="color:white;background-color:blue">Connexion</button>
+                </div>
+            </div>
         </div>
-        
-        <div id='connexion-client'>
-            <!--label for="bouton-connexion-client">Connexion client</label-->
-            Connexion Client <br>
-            Accédez à votre espace client, réalisez une demande d'intervention, 
-            consultez vore historique d'interventions. <br>
-            <button id="bouton-connexion-client">Connexion</button>
-        </div>
-        <div id='connexion-employe'>
-            <!--label for="bouton-connexion-employe">Connexion employé</label-->
-            Connexion employé <br>
-            Gérez vos interventions, consultez votre tableau de bord. <br>
-            <button id="bouton-connexion-employe">Connexion</button>
-        </div>
-        
-        <div id="message"></div>
-        
+
+
         <script>
 
             function connexionClient() {
                 var champLogin = $('#champ-login').val();
                 var champPassword = $('#champ-password').val();
                 console.log('login : ' + champLogin);
-                console.log('Password : ' + champPassword); 
+                console.log('Password : ' + champPassword);
                 $('#message').html('Connexion en cours...');
 
                 $.ajax({
@@ -58,10 +89,10 @@
                     // si connexion ok, aller sur la page suivante :
                     window.location = "MenuClient.html";
                     // si connexion pas ok afficher un texte dans la div message :
-                    
+
                 }).fail(function (data) {
                     // ici votre code...
-                    
+
                     // si connexion pas ok afficher un texte dans la div message :
                     $('#message').html('Echec de la connexion');
                 });
@@ -89,12 +120,12 @@
                     window.location = "MenuEmploye.html";
                 }).fail(function () {
                     // ici votre code...
-                    
+
                     // si connexion pas ok afficher un texte dans la div message :
                     $('#message').html('Echec de la connexion');
                 });
             }
-            
+
             $(document).ready(function () {
                 // ajout d'un "handler" sur le clic du bouton de connexion
                 $('#bouton-connexion-client').on('click', function () {
@@ -104,7 +135,7 @@
                     connexionClient();
                 });
             });
-            
+
             $(document).ready(function () {
                 // ajout d'un "handler" sur le clic du bouton de connexion
                 $('#bouton-connexion-employe').on('click', function () {
