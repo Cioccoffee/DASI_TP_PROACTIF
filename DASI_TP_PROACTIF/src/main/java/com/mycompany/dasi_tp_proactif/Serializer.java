@@ -9,7 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.maps.model.LatLng;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -20,6 +22,7 @@ import modele.Client;
 import modele.Employe;
 import modele.Intervention;
 import modele.Livraison;
+import service.ServiceAppli;
 
 /**
  *
@@ -60,81 +63,108 @@ public class Serializer {
         out.println(gson.toJson(container));
     }
     
-    public static void printAnswerAdresse(PrintWriter out){
+    public static void printAnswerAdresse(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-//        if(connectedClient != null){
-//            //jo.addProperty("adresse",.getAdresse());
-//        }else{
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
+            jo.addProperty("adresse",connectedEmploye.getInterventionEnCours().getClient().getAdressePostale());
+        }else{
             jo.addProperty("adresse","adresse");
-        //}
+        }
         out.println(gson.toJson(jo));
     }
     
-    public static void printAnswerDemande(PrintWriter out){
+    public static void printAnswerDemande(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-//        if(connectedClient != null){
-//            //jo.addProperty("adresse",.getAdresse());
-//        }else{
-            jo.addProperty("adresse","adresse");
-        //}
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy à HH:mm:ss");
+            String date = df.format(connectedEmploye.getInterventionEnCours().getDateDeDebut());
+            jo.addProperty("demande", date);
+        }else{
+            jo.addProperty("demande","demande");
+        }
         out.println(gson.toJson(jo));
     }
     
-    public static void printAnswerClient(PrintWriter out){
+    public static void printAnswerClient(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-//        if(connectedClient != null){
-//            //jo.addProperty("adresse",.getAdresse());
-//        }else{
-            jo.addProperty("adresse","adresse");
-        //}
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
+            Client c = connectedEmploye.getInterventionEnCours().getClient();
+            String client = c.getPrenom() + ' ' + c.getNom() + " (#" + c.getId() + ')';
+            jo.addProperty("client",client);
+        }else{
+            jo.addProperty("client","client");
+        }
         out.println(gson.toJson(jo));
     }
     
-    public static void printAnswerType(PrintWriter out){
+    public static void printAnswerType(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-//        if(connectedClient != null){
-//            //jo.addProperty("adresse",.getAdresse());
-//        }else{
-            jo.addProperty("adresse","adresse");
-        //}
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
+            jo.addProperty("type",connectedEmploye.getInterventionEnCours().getClass().getSimpleName());
+        }else{
+            jo.addProperty("type","type");
+        }
         out.println(gson.toJson(jo));
     }
     
-    public static void printAnswerAnimal(PrintWriter out){
+    public static void printAnswerAnimal(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-//        if(connectedClient != null){
-//            //jo.addProperty("adresse",.getAdresse());
-//        }else{
-            jo.addProperty("adresse","adresse");
-        //}
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
+            Animal interventionAnimal = (Animal) connectedEmploye.getInterventionEnCours();
+            jo.addProperty("animal",interventionAnimal.getType());
+        }else{
+            jo.addProperty("animal","pas d'animal");
+        }
         out.println(gson.toJson(jo));
     }
     
-    public static void printAnswerDescription(PrintWriter out){
+    public static void printAnswerLivraison(PrintWriter out, HttpSession session){
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         JsonObject jo = new JsonObject();
-//        if(connectedClient != null){
-//            //jo.addProperty("adresse",.getAdresse());
-//        }else{
-            jo.addProperty("adresse","adresse");
-        //}
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
+            Livraison interventionLivraison = (Livraison) connectedEmploye.getInterventionEnCours();
+            jo.addProperty("prestataire",interventionLivraison.getPrestataire());
+            jo.addProperty("objet",interventionLivraison.getObjet());
+        }else{
+            jo.addProperty("prestataire","pas de livraison");
+        }
+        out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerDescription(PrintWriter out, HttpSession session){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonObject jo = new JsonObject();
+        Employe connectedEmploye = (Employe)session.getAttribute("employe");
+        if(connectedEmploye != null){
+            jo.addProperty("description",connectedEmploye.getInterventionEnCours().getDescription());
+        }else{
+            jo.addProperty("description","description");
+        }
         out.println(gson.toJson(jo));
     }
     
@@ -150,6 +180,28 @@ public class Serializer {
             jo.addProperty("Intervention","Non validée");
         }
         out.println(gson.toJson(jo));
+    }
+    
+    public static void printAnswerListInterventions(PrintWriter out){
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        JsonArray jo = new JsonArray();
+        List<Intervention> interventionsJour = ServiceAppli.GetInterventionsJour();
+        if (interventionsJour!=null){
+            for (Intervention i : interventionsJour)
+            {
+                JsonObject jsonIntervention = new JsonObject();
+                jsonIntervention.addProperty("type",i.getClass().getSimpleName());
+                jsonIntervention.addProperty("latitude",i.getClient().getCoordGPSDomicile().lat);
+                jsonIntervention.addProperty("longitude",i.getClient().getCoordGPSDomicile().lng);
+                jo.add(jsonIntervention);
+            }
+        }
+        
+        JsonObject container = new JsonObject();
+        container.add("intervention", jo);
+        out.println(gson.toJson(container));
     }
     
     //Connexion - Déconnexion
