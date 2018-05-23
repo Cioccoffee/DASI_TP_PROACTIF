@@ -45,6 +45,22 @@ and open the template in the editor.
             .nonTable{
                 text-align: center;
             }
+            .button{
+                background-color: blue;
+                color: white;
+                border: 2px solid black; 
+                cursor: pointer;
+                padding: 3px 8px;
+            }
+            .liButton{
+                float: right;
+                text-align: center;
+                margin-right: 10px;
+            }
+            .buttonConnexion{
+                border: 2px solid black;
+                padding: 3px 8px;
+            }
         </style>
         <title>InscriptionClient</title>
         <meta charset="UTF-8">
@@ -53,9 +69,12 @@ and open the template in the editor.
     </head>
     <body>
         <div class="header">
-        <a href="Accueil.html"><img src="Proact'IF.png"></a>
-        <div class="bouton-connexion"><input type="button" value="Connexion" 
-                    onclick="window.location.href='MenuConnexion.html';"/></div>
+            <a href="Accueil.html"><img src="Proact'IF.png"></a>
+
+            <div class="bouton-connexion"><input type="button" class="buttonConnexion" value="Connexion" 
+                        onclick="window.location.href='MenuConnexion.html';"/></div>
+            <div class="liButton"><button class="button" 
+                                          id="inscription">Inscription</button></div>
         </div>
         <div class="container">
             <div class="item">
@@ -113,7 +132,7 @@ and open the template in the editor.
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="nonTable"><button id="bouton-inscription-client">Créer mon 
+                        <td class="nonTable"><button class="button" id="bouton-inscription-client">Créer mon 
                                 compte</button>
                             <div id="message"></div>
                         </td>
