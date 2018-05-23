@@ -16,14 +16,11 @@ import actions.ActionInterventionAnimal;
 import actions.ActionInterventionIncident;
 import actions.ActionInterventionLivraison;
 import actions.ActionValiderIntervention;
-import static com.mycompany.dasi_tp_proactif.Serializer.printAnswerInscription;
 import dao.JpaUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,8 +31,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import modele.Animal;
 import modele.Client;
 import modele.Employe;
 import modele.Intervention;
@@ -209,7 +204,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                Serializer.printAnswerAdresse(out);
+                Serializer.printAnswerAdresse(out, session);
                 out.close();
                 break;
                 
@@ -217,7 +212,15 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                Serializer.printAnswerDemande(out);
+                Serializer.printAnswerDemande(out, session);
+                out.close();
+                break;
+                
+            case "getClient":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerClient(out, session);
                 out.close();
                 break;
                 
@@ -225,7 +228,7 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                Serializer.printAnswerType(out);
+                Serializer.printAnswerType(out, session);
                 out.close();
                 break;
                 
@@ -233,7 +236,15 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                Serializer.printAnswerAnimal(out);
+                Serializer.printAnswerAnimal(out, session);
+                out.close();
+                break;
+                
+            case "getLivraison":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerLivraison(out, session);
                 out.close();
                 break;
                 
@@ -241,16 +252,24 @@ public class ActionServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                Serializer.printAnswerDescription(out);
+                Serializer.printAnswerDescription(out, session);
                 out.close();
                 break;
                 
             case "validerIntervention":
-                //boolean valider = ActionValiderIntervention.execute(request, e);
+                boolean valider = ActionValiderIntervention.execute(request, session);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
-                //Serializer.printValiderIntervention(out, e);
+                Serializer.printAnswerValiderIntervention(out, valider);
+                out.close();
+                break;
+                
+            case "getInterventionsJour":
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                Serializer.printAnswerListInterventions(out);
                 out.close();
                 break;
                 
