@@ -38,10 +38,10 @@ public class ActionInscrireClient {
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date d = sf.parse(date);
         String resDate = df.format(d);
-
+        String adressePostale = rue + ", " + ville;
 
         Client newClient = new Client(nom, prenom, 
-                    civilite, resDate, telephone, codePostal,
+                    civilite, resDate, telephone, adressePostale,
                     mail, password);
 
         InscriptionClient(newClient);
